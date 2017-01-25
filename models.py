@@ -8,21 +8,9 @@ class BaseModel(Model):
     class Meta:
         database = db
 
-
-class Applicant(BaseModel):
-    application_code = CharField()
-    first_name = CharField()
-    last_name = CharField()
-    gender = CharField()
-    email_address = CharField(unique=True)
-    city = ForeignKeyField(City)
-    school = ForeignKeyField(School, default=None)
-
-
 class School(BaseModel):
     #entries should contain the existing schools of Codecool like Miskolc, Budapest, Krakow
     location = CharField()
-
 
 class City(BaseModel):
     #entries should contain all the information about cities where is no Codecool School yet, so we can find easily the closest city where is a School. Example data:
@@ -34,26 +22,41 @@ class City(BaseModel):
     school = ForeignKeyField(School)
 
 
+class Applicant(BaseModel):
+    application_code = CharField()
+    first_name = CharField()
+    last_name = CharField()
+    gender = CharField()
+    email_address = CharField(unique=True)
+    city = ForeignKeyField(City)
+    school = ForeignKeyField(School, default=None)
+    status = CharField()
+
 class Mentor(BaseModel):
     #entries should contain all the information about possible interview slots of mentors with specific date/time info. Example data:
     #Start: 2016-09-01 10:00
     #End: 2016-09-01 11:00
     #Reserved: true/false
     #Mentor: related mentor object
-    pass
-
+    first_name=CharField()
+    last_name=CharField()
+    school=ForeignKeyField(School)
+    email=CharField()
 
 class InterviewSlot(BaseModel):
-    pass
-
+    start=DateField()
+    end=DateField()
+    reserved=CharField()
+    mentor=ForeignKeyField(Mentor)
 
 class Interview(BaseModel):
-    pass
-
+    start=ForeignKeyField(InterviewSlot)
+    end=CharField()
+    applicant=ForeignKeyField(Applicant)
+    mentor=ForeignKeyField(Mentor)
 
 class Question(BaseModel):
     pass
-
 
 class Answer(BaseModel):
     pass
