@@ -1,3 +1,5 @@
+from models import *
+import new_applicants
 print("Welcome to Codecool.")
 print("Please choose your permission.")
 print(" 1.Admin", "\n","2.Mentor", "\n","3.Applicant", "\n", "0.Exit")
@@ -19,7 +21,7 @@ if permission==1:
             raise ValueError()
     except ValueError:
         print("Invalid Option, you needed to type a 1, 2 or 0.")
-    options=[Menu(), Interview.list_of_interviews(), Applicant.applicants()]
+    options=[Interview.list_of_interviews(), Applicant.applicants()]
     options[choice]
 else:
     pass
@@ -32,7 +34,7 @@ if permission==2:
             raise ValueError()
     except ValueError:
         print("Invalid Option, you needed to type a 1 or 0.")
-    options=[Menu(), Interviews.list_interviews(), Applicant.new_applications()]
+    options=[Interviews.list_interviews(), Applicant.new_applications()]
     options[choice]
 else:
     pass
@@ -45,7 +47,7 @@ if permission==3:
             raise ValueError()
     except ValueError:
         print("Invalid Option, you needed to type a 1, 2, 3 or 0.")
-    options=[Menu(), Applicant.find_application(), Interview.find_interview(), new_applicants.new_application()]
+    options=[new_applicants.new_application()]
     option[choice]
 else:
     pass
