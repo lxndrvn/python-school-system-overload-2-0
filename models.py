@@ -19,7 +19,7 @@ class City(BaseModel):
     #Budapest -> Budapest
     #Székesfehérvár -> Budapest
     name = CharField()
-    school = ForeignKeyField(School)
+    school = ForeignKeyField(School,related_name="school")
 
 
 class Applicant(BaseModel):
@@ -27,9 +27,9 @@ class Applicant(BaseModel):
     first_name = CharField()
     last_name = CharField()
     gender = CharField()
-    email_address = CharField(unique=True)
+    email = CharField(unique=True)
     city = ForeignKeyField(City)
-    school = ForeignKeyField(School, default=None)
+    school = ForeignKeyField(School)
     status = CharField()
 
 class Mentor(BaseModel):
@@ -44,9 +44,9 @@ class Mentor(BaseModel):
     email=CharField()
 
 class InterviewSlot(BaseModel):
-    start=DateField()
-    end=DateField()
-    reserved=CharField()
+    start=CharField()
+    end=CharField()
+    reserved=BooleanField()
     mentor=ForeignKeyField(Mentor)
 
 class Interview(BaseModel):
