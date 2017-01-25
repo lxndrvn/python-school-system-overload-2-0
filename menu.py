@@ -3,6 +3,7 @@ import new_applicants
 print("Welcome to Codecool.")
 print("Please choose your permission.")
 print(" 1.Admin", "\n","2.Mentor", "\n","3.Applicant", "\n", "0.Exit")
+
 try:
     permission = int(input("Choose 1, 2, 3 or 0 to exit:"))
     if not (0 <= permission <= 3):
@@ -14,9 +15,8 @@ if permission==0:
     exit()
 
 if permission==1:
-    print(" 1.Interviews", "\n", "2.Applicants", "\n", "0.Back")
     try:
-        choice = int(input("Choose 1, 2 or 0 to go back:"))
+        choice = int(input("1: Interviews | 2: Applicants | 0: Back"))
         if not (0 <= choice <= 2):
             raise ValueError()
     except ValueError:
@@ -48,6 +48,6 @@ if permission==3:
     except ValueError:
         print("Invalid Option, you needed to type a 1, 2, 3 or 0.")
     options=[new_applicants.new_application()]
-    option[choice]
+    options[choice]
 else:
     pass
