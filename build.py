@@ -5,4 +5,4 @@ from models import *
 
 db.connect()
 # List the tables here what you want to create...
-db.create_tables([Applicant, School, City], safe=True)
+db.create_tables([School, City, Applicant, Mentor, InterviewSlot, Interview], safe=True)
