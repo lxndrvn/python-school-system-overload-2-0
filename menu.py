@@ -1,53 +1,59 @@
 from models import *
 import new_applicants
-print("Welcome to Codecool.")
-print("Please choose your permission.")
-print(" 1.Admin", "\n","2.Mentor", "\n","3.Applicant", "\n", "0.Exit")
 
-try:
-    permission = int(input("Choose 1, 2, 3 or 0 to exit:"))
-    if not (0 <= permission <= 3):
-        raise ValueError()
-except ValueError:
-    print("Invalid Option, you needed to type a 1, 2, 3 or 0.")
+class Menu():
+    def __init__(self):
+        permission = int(input("Welcome to Codecool.\n\
+        Please choose your permission.\n\
+        1.Applicant | 2.Mentor | 3.Admin | 0.Exit\n"))
+        if permission==0:
+            exit()
+        elif permission==1:
+            self.ApplicantMenu()
+        elif permission==2:
+            self.MentorMenu()
+        elif permission==3:
+            self.AdminMenu()
+        if not (0 <= permission <= 3):
+            raise ValueError()
+            print("Invalid Option, you needed to type a 1, 2, 3 or 0.")
 
-if permission==0:
-    exit()
-
-if permission==1:
-    try:
-        choice = int(input("1: Interviews | 2: Applicants | 0: Back"))
+    def ApplicantMenu(self):
+        choice = int(input("1: Interviews | 2: Applicants | 0: Back\n"))
+        if choice==0:
+            Menu()
+        if choice==1:
+            Interview.list_of_interviews()
+        if choice==2:
+            Applicant.applicants()
+        options[choice]
         if not (0 <= choice <= 2):
             raise ValueError()
-    except ValueError:
-        print("Invalid Option, you needed to type a 1, 2 or 0.")
-    options=[Interview.list_of_interviews(), Applicant.applicants()]
-    options[choice]
-else:
-    pass
+            print("Invalid Option, you needed to type a 1, 2 or 0.\n")
 
-if permission==2:
-    print(" 1.Interview", "\n", "2.New applicants", "\n", "0.Back")
-    try:
-        choice = int(input("Choose 1 or 0 to go back:"))
+    def ApplicantMenu(self):
+        choice = int(input("1.Interview 2.New applicants 0.Back\n"))
+        if choice==0:
+            Menu()
+        if choice==1:
+            Interviews.list_interviews()
+        if choice==2:
+            Applicant.new_applications()
         if not (0 <= choice <= 1):
-            raise ValueError()
-    except ValueError:
-        print("Invalid Option, you needed to type a 1 or 0.")
-    options=[Interviews.list_interviews(), Applicant.new_applications()]
-    options[choice]
-else:
-    pass
-
-if permission==3:
-    print(" 1.Application Details", "\n", "2.Interview Details", "\n", "3.Apply","\n", "0.Back")
-    try:
-        choice = int(input("Choose 1, 2 or 0 to go back:"))
-        if not (0 <= choice <= 3):
-            raise ValueError()
-    except ValueError:
-        print("Invalid Option, you needed to type a 1, 2, 3 or 0.")
-    options=[new_applicants.new_application()]
-    options[choice]
-else:
-    pass
+                raise ValueError()
+                print("Invalid Option, you needed to type a 1 or 0.\n")
+    
+    def ApplicantMenu(self):
+        choice = int(input("1.Application Details 2.Interview Details 3.Apply 0.Back\n"))
+        if choice==0:
+            Menu()
+        if choice==1:
+            Interviews.list_interviews()
+        if choice==2:
+            Applicant.new_applications()
+        if choice==3:
+            new_applicants.new_application()
+            if not (0 <= choice <= 3):
+                raise ValueError()
+                print("Invalid Option, you needed to type a 1, 2, 3 or 0.\n")
+Menu()
