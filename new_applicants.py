@@ -4,6 +4,12 @@
 import uuid
 from models import *
 
+def new_application():
+	first_name=input("Name: ")
+	last_name=input("Last name: ")
+
+	Applicant.create(first_name,last_name)
+
 def handle_new_applicants():
     new_applicants = Applicant.select().where(Applicant.application_code == None)
     for applicant in new_applicants:
