@@ -46,13 +46,13 @@ class Mentor(BaseModel):
 class InterviewSlot(BaseModel):
     start=CharField()
     end=CharField()
-    reserved=BooleanField()
+    availability=ForeignKeyField(Mentor,null=True)
 
 class Interview(BaseModel):
-    start=ForeignKeyField(InterviewSlot)
+    start=CharField()
     end=CharField()
-    applicant=ForeignKeyField(Applicant)
-    mentor=ForeignKeyField(Mentor)
+    applicant=ForeignKeyField(Applicant,null=True)
+    mentor=ForeignKeyField(Mentor,null=True)
 
 class Question(BaseModel):
     pass

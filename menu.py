@@ -1,5 +1,5 @@
 from models import *
-import new_applicants
+import user_interfaces
 import os
 class Menu():
     def __init__(self):
@@ -22,11 +22,12 @@ class Menu():
         if choice==0:
             Menu()
         if choice==1:
-            new_applicants.check_interviewslots()
+            user_interfaces.interview_subscription()
+            self.ApplicantMenu()
         if choice==2:
-            new_applicants.my_applications()
+            user_interfaces.my_applications()
         if choice==3:
-            new_applicants.new_application()
+            user_interfaces.new_application()
             print('Application Successful! Review status in menu 1.')
             self.ApplicantMenu()
         if not (0 <= choice <= 3):
@@ -36,16 +37,15 @@ class Menu():
     def MentorMenu(self):
         choice = int(input("1: Interviews | 2: Applicants | 0: Back\n"))
         os.system('cls' if os.name == 'nt' else 'clear')
-
         if choice==0:
             self
         if choice==1:
             Interview.list_of_interviews()
             print('Application Successful! Review status in menu 1.')
-            self.ApplicantMenu()
+            self.MentorMenu()
         if choice==2:
             Applicant.applicants()
-            self.ApplicantMenu()
+            self.MentorMenu()
         options[choice]
         if not (0 <= choice <= 2):
             print("Invalid Option, you needed to type a 1, 2 or 0.\n")
@@ -57,10 +57,10 @@ class Menu():
         if choice==0:
             Menu()
         if choice==1:
-            new_applicants.check_applications()
+            user_interfaces.check_applications()
             self.AdminMenu()
         if choice==2:
-            new_applicants.handle_new_applicants()
+            user_interfaces.handle_new_applicants()
             self.AdminMenu()
         if not (0 <= choice <= 2):
             print("Invalid Option, you needed to type a 1, 2 or 0.\n")

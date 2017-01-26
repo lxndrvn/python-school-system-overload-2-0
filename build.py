@@ -35,10 +35,10 @@ applicants=[{'first_name': 'Alexandra', 'last_name': 'Ivan', 'gender':'female', 
 for applicant in applicants:
     Applicant.create(status=applicant['status'], application_code=None,first_name=applicant['first_name'], last_name=applicant['last_name'], email=applicant['email'], gender=applicant['gender'], city=City.select().where(City.name==applicant['city']).get(), school=None)
 
-interview_slots=[{'start': '2017-09-01 09:00:00', 'end': '2017-09-01 13:00:00', 'reserved': False},
-				 {'start': '2017-09-02 10:00:00', 'end': '2017-09-02 14:00:00', 'reserved': False},
-				 {'start': '2017-09-03 11:00:00', 'end': '2017-09-03 15:00:00', 'reserved': False},
-				 {'start': '2017-09-04 12:00:00', 'end': '2017-09-04 16:00:00', 'reserved': False},
-				 {'start': '2017-09-05 13:00:00', 'end': '2017-09-05 17:00:00', 'reserved': False}]
+interview_slots=[{'start': '2017-09-01 09:00:00', 'end': '2017-09-01 13:00:00'},
+				 {'start': '2017-09-02 10:00:00', 'end': '2017-09-02 14:00:00'},
+				 {'start': '2017-09-03 11:00:00', 'end': '2017-09-03 15:00:00'},
+				 {'start': '2017-09-04 12:00:00', 'end': '2017-09-04 16:00:00'},
+				 {'start': '2017-09-05 13:00:00', 'end': '2017-09-05 17:00:00'}]
 for interview_slot in interview_slots:
-    InterviewSlot.create(start=interview_slot['start'], end=interview_slot['end'], reserved=interview_slot['reserved'])
+    InterviewSlot.create(start=interview_slot['start'], end=interview_slot['end'], availability=Mentor.select().where(Mentor.school==bpschool).count())
