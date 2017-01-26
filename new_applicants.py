@@ -1,6 +1,6 @@
 # New applicants arrive into your project database by this script.
 # You can run it anytime to generate new data!
-
+import random
 import uuid
 from models import *
 
@@ -11,14 +11,18 @@ def new_application():
 	gender=input("Gender: ")
 	email=input("Email address: ")
 	city=input("Home city: ")
-	Applicant.create(application_code="",first_name=first_name,last_name=last_name,gender=gender,email=email,city=City.select().where(City.name==city).get(),school=City.select().where(City.name==city).get().school,status="NEW")
+	Applicant.create(status="NEW",application_code="NULL",first_name=first_name,last_name=last_name,gender=gender,email=email,city=City.select().where(City.name==city).get(),school="None")
+	print('Application Successful! Review status in menu 1.')
 
-def generate_code():
-    return str(uuid.uuid4())
+def check_applications():
+    for applicant in Applicant.select():
+    	print(applicant.status,"|",applicant.application_code,"|",applicant.first_name,"|",applicant.last_name,"|",applicant.city.name,"|",applicant.school)
+    print('There are',len([applicant for applicant in Applicant.select().where(Applicant.status=="NEW")]),'new applicants! woohoo!')
 
 def handle_new_applicants():
-    new_applicants = Applicant.select().where(Applicant.status == "New")
-    for applicant in new_applicants:
-        applicant.application_code = generate_code()
-        school_for_applicant = Applicant.city.school
-        applicant.update(application_code=id, school=school_for_applicant)
+	for applicant in Applicant.select().where(Applicant.status=="NEW"):
+	    applicant.application_code = uuid.uuid4()
+	    applicant.school=applicant.city.school.location
+	    applicant.status = "ACCEPTED"
+	    applicant.save()
+	    print(applicant.first_name,"accepted")
