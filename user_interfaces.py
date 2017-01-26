@@ -4,16 +4,6 @@ import random
 import uuid
 from models import *
 
-def new_application():
-	print("Let us know Your information to Apply!")
-	first_name=input("Given Name: ")
-	last_name=input("Familiy Name: ")
-	gender=input("Gender: ")
-	email=input("Email address: ")
-	city=input("Home city: ")
-	Applicant.create(status="NEW",application_code=None,first_name=first_name,last_name=last_name,gender=gender,email=email,city=City.select().where(City.name==city).get(),school=None)
-	print('Application Successful! Review status in menu 1.')
-
 def check_applications():
 	for applicant in Applicant.select():
 		print(applicant.status,"|",applicant.application_code,"|",applicant.first_name,"|",applicant.last_name,"|",applicant.city.name,"|",applicant.school.location if applicant.school!=None else None)
@@ -28,10 +18,27 @@ def handle_new_applicants():
 		applicant.save()
 		print(applicant.first_name,"accepted")
 
+def new_application():
+	print("Let us know Your information to Apply!")
+	first_name=input("Given Name: ")
+	last_name=input("Familiy Name: ")
+	gender=input("Gender: ")
+	email=input("Email address: ")
+	city=input("Home city: ")
+	while city not in [city.name for city in City.select()]:
+		print("Sorry, application is not available in Your city Yet. Please move to an other one.")
+		city=input("Home city: ")
+	user=Applicant.create(status="NEW",application_code=None,first_name=first_name,last_name=last_name,gender=gender,email=email,city=City.select().where(City.name==city).get(),school=None)
+	return user
+	print('Application Successful! Review status in menu 1.')
+
+def my_application(user):
+	print(user.status,"|",user.application_code,"|",user.first_name,"|",user.last_name,"|",user.city.name,"|",user.school.location if user.school!=None else None)
+
 def interview_subscription():
 	key=input("Provide Your application code to make an appointment (0 to cancel): ")
 	if key==0:
-		return None
+		return "Cancelled"
 	elif key not in [applicant.application_code for applicant in Applicant.select()]:
 		print("No such application in our records. ")
 		interview_subscription()
@@ -50,3 +57,7 @@ def interview_subscription():
 		else:
 			yourmentor=[mentor for mentor in Mentor][0]
 		Interview.create(start=InterviewSlot.select().where(InterviewSlot.id==interviewid).get().start,end=InterviewSlot.select().where(InterviewSlot.id==interviewid).get().end,applicant=applicant,mentor=yourmentor)
+
+def check_interviews():
+	for interview in Interview.select():
+		print(interview.start,"|",interview.end,"|",interview.applicant.first_name,"|",interview.mentor.first_name)
