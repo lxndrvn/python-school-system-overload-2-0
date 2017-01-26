@@ -16,9 +16,8 @@ def new_application():
 
 def check_applications():
 	for applicant in Applicant.select():
-		school=applicant.school
-		print(applicant.status,"|",applicant.application_code,"|",applicant.first_name,"|",applicant.last_name,"|",applicant.city.name,"|",school.location if applicant.school!=None else None)
-	print('There are',len([applicant for applicant in Applicant.select().where(Applicant.status=="NEW")]),'new applicants! woohoo!')
+		print(applicant.status,"|",applicant.application_code,"|",applicant.first_name,"|",applicant.last_name,"|",applicant.city.name,"|",applicant.school.location if applicant.school!=None else None)
+	print('There are',len([applicant for applicant in Applicant.select().where(Applicant.status=="NEW")]),'new applicants! woohoo! Accept them buddy!')
 
 def handle_new_applicants():
 	for applicant in Applicant.select().where(Applicant.status=="NEW"):
@@ -27,3 +26,8 @@ def handle_new_applicants():
 	    applicant.status = "ACCEPTED"
 	    applicant.save()
 	    print(applicant.first_name,"accepted")
+
+def check_interviewslots():
+	for interviewslot in InterviewSlot.select():
+		print(interviewslot.id,interviewslot.start,"|",interviewslot.end,"|",interviewslot.reserved)
+	print("Choose a slot when we can get to know each other!")
