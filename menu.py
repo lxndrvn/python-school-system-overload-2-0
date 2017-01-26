@@ -1,6 +1,7 @@
 from models import *
 import user_interfaces
 import os
+
 class Menu():
     def __init__(self):
         permission = int(input("Welcome to Codecool.\nPlease choose your permission.\n1.Applicant | 2.Mentor | 3.Admin | 0.Exit\n"))
@@ -17,18 +18,20 @@ class Menu():
             Menu()
 
     def ApplicantMenu(self):
-        choice = int(input("1.Interview Subscription 2.Interview Details 3.Apply 0.Back\n"))
+        choice = int(input("1.Apply | 2.Interview Subscription | 3.My Application 0.Back\n"))
         os.system('cls' if os.name == 'nt' else 'clear')
         if choice==0:
             Menu()
         if choice==1:
-            user_interfaces.interview_subscription()
+            global user
+            user=user_interfaces.new_application()
+            print('Application Successful! Review status in menu 1.')
             self.ApplicantMenu()
         if choice==2:
-            user_interfaces.my_applications()
+            user_interfaces.interview_subscription()
+            self.ApplicantMenu()
         if choice==3:
-            user_interfaces.new_application()
-            print('Application Successful! Review status in menu 1.')
+            user_interfaces.my_application(user)
             self.ApplicantMenu()
         if not (0 <= choice <= 3):
             print("Invalid Option, you needed to type a 1, 2, 3 or 0.\n")
@@ -52,7 +55,7 @@ class Menu():
             self.MentorMenu()
 
     def AdminMenu(self):
-        choice = int(input("1.Review Applications 2.Accept New Applicants 0.Back\n"))
+        choice = int(input("1.Review Applications | 2.Accept New Applicants | 3.Check on Interviews | 0.Back\n"))
         os.system('cls' if os.name == 'nt' else 'clear')
         if choice==0:
             Menu()
@@ -60,7 +63,10 @@ class Menu():
             user_interfaces.check_applications()
             self.AdminMenu()
         if choice==2:
-            user_interfaces.handle_new_applicants()
+            user_interfaces.accept_new_applicants()
+            self.AdminMenu()
+        if choice==3:
+            user_interfaces.check_interviews()
             self.AdminMenu()
         if not (0 <= choice <= 2):
             print("Invalid Option, you needed to type a 1, 2 or 0.\n")
