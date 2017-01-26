@@ -3,7 +3,7 @@ from connect import create_database
 from models import *
 
 db.connect()
-db.drop_tables([School, City, Applicant, Mentor, InterviewSlot, Interview])
+db.drop_tables([School, City, Applicant, Mentor, InterviewSlot, Interview],safe=True,	cascade=True)
 # List the tables here what you want to create...
 db.create_tables([School, City, Applicant, Mentor, InterviewSlot, Interview], safe=True)
 
@@ -33,13 +33,12 @@ applicants=[{'first_name': 'Alexandra', 'last_name': 'Ivan', 'gender':'female', 
     		{'first_name': 'David', 'last_name': 'Szilniczky', 'gender':'male','city': 'Krakow','email': 'szili.codecool@gmail.com','status': 'NEW'},
     		{'first_name': 'Fanni', 'last_name': 'Perjesi', 'gender':'female','city': 'Eger', 'email':'perj.codecool@gmail.com','status': 'NEW'}]
 for applicant in applicants:
-    Applicant.create(status=applicant['status'], application_code="None",first_name=applicant['first_name'], last_name=applicant['last_name'], email=applicant['email'], gender=applicant['gender'], city=City.select().where(City.name==applicant['city']).get(), school="None")
+    Applicant.create(status=applicant['status'], application_code=None,first_name=applicant['first_name'], last_name=applicant['last_name'], email=applicant['email'], gender=applicant['gender'], city=City.select().where(City.name==applicant['city']).get(), school=None)
 
-interview_slots=[{'start': '2017-09-01 09:00:00', 'end': '2017-09-01 13:00:00', 'reserved': False, 'mentor': None},
-				 {'start': '2017-09-02 10:00:00', 'end': '2017-09-02 14:00:00', 'reserved': False, 'mentor': None},
-				 {'start': '2017-09-03 11:00:00', 'end': '2017-09-03 15:00:00', 'reserved': False, 'mentor': None},
-				 {'start': '2017-09-04 12:00:00', 'end': '2017-09-04 16:00:00', 'reserved': False, 'mentor': None},
-				 {'start': '2017-09-05 13:00:00', 'end': '2017-09-05 17:00:00', 'reserved': False, 'mentor': None}]
-
+interview_slots=[{'start': '2017-09-01 09:00:00', 'end': '2017-09-01 13:00:00', 'reserved': False},
+				 {'start': '2017-09-02 10:00:00', 'end': '2017-09-02 14:00:00', 'reserved': False},
+				 {'start': '2017-09-03 11:00:00', 'end': '2017-09-03 15:00:00', 'reserved': False},
+				 {'start': '2017-09-04 12:00:00', 'end': '2017-09-04 16:00:00', 'reserved': False},
+				 {'start': '2017-09-05 13:00:00', 'end': '2017-09-05 17:00:00', 'reserved': False}]
 for interview_slot in interview_slots:
-    InterviewSlot.create(start=interview_slot['start'], end=interview_slot['end'], reserved=interview_slot['reserved'], mentor=Mentor.select().where(Mentor.first_name=="Matyi").get())
+    InterviewSlot.create(start=interview_slot['start'], end=interview_slot['end'], reserved=interview_slot['reserved'])
