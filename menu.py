@@ -45,7 +45,6 @@ class Menu():
             self.ApplicantMenu()
         if choice==2:
             Applicant.applicants()
-            print('Application Successful! Review status in menu 1.')
             self.ApplicantMenu()
         options[choice]
         if not (0 <= choice <= 2):
