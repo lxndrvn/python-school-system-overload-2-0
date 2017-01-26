@@ -23,13 +23,13 @@ class City(BaseModel):
 
 
 class Applicant(BaseModel):
-    application_code = CharField()
+    application_code = CharField(null=True)
     first_name = CharField()
     last_name = CharField()
     gender = CharField()
     email = CharField(unique=True)
-    city = ForeignKeyField(City)
-    school = CharField()
+    city = ForeignKeyField(City,null=True)
+    school = ForeignKeyField(School,null=True)
     status = CharField()
 
 class Mentor(BaseModel):
@@ -47,7 +47,6 @@ class InterviewSlot(BaseModel):
     start=CharField()
     end=CharField()
     reserved=BooleanField()
-    mentor=ForeignKeyField(Mentor)
 
 class Interview(BaseModel):
     start=ForeignKeyField(InterviewSlot)
