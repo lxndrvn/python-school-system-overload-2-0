@@ -17,12 +17,12 @@ class Menu():
             Menu()
 
     def ApplicantMenu(self):
-        choice = int(input("1.Application Details 2.Interview Details 3.Apply 0.Back\n"))
+        choice = int(input("1.Interview Subscription 2.Interview Details 3.Apply 0.Back\n"))
         os.system('cls' if os.name == 'nt' else 'clear')
         if choice==0:
             Menu()
         if choice==1:
-            Interviews.list_interviews()
+            new_applicants.check_interviewslots()
         if choice==2:
             new_applicants.my_applications()
         if choice==3:
