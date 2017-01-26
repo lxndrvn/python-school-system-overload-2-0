@@ -11,18 +11,19 @@ def new_application():
 	gender=input("Gender: ")
 	email=input("Email address: ")
 	city=input("Home city: ")
-	Applicant.create(status="NEW",application_code="NULL",first_name=first_name,last_name=last_name,gender=gender,email=email,city=City.select().where(City.name==city).get(),school="None")
+	Applicant.create(status="NEW",application_code=None,first_name=first_name,last_name=last_name,gender=gender,email=email,city=City.select().where(City.name==city).get(),school=None)
 	print('Application Successful! Review status in menu 1.')
 
 def check_applications():
-    for applicant in Applicant.select():
-    	print(applicant.status,"|",applicant.application_code,"|",applicant.first_name,"|",applicant.last_name,"|",applicant.city.name,"|",applicant.school)
-    print('There are',len([applicant for applicant in Applicant.select().where(Applicant.status=="NEW")]),'new applicants! woohoo!')
+	for applicant in Applicant.select():
+		school=applicant.school
+		print(applicant.status,"|",applicant.application_code,"|",applicant.first_name,"|",applicant.last_name,"|",applicant.city.name,"|",school.location if applicant.school!=None else None)
+	print('There are',len([applicant for applicant in Applicant.select().where(Applicant.status=="NEW")]),'new applicants! woohoo!')
 
 def handle_new_applicants():
 	for applicant in Applicant.select().where(Applicant.status=="NEW"):
 	    applicant.application_code = uuid.uuid4()
-	    applicant.school=applicant.city.school.location
+	    applicant.school=applicant.city.school
 	    applicant.status = "ACCEPTED"
 	    applicant.save()
 	    print(applicant.first_name,"accepted")
