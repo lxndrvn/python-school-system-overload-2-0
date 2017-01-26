@@ -29,7 +29,7 @@ class Applicant(BaseModel):
     gender = CharField()
     email = CharField(unique=True)
     city = ForeignKeyField(City)
-    school = ForeignKeyField(School)
+    school = CharField()
     status = CharField()
 
 class Mentor(BaseModel):
