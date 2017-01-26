@@ -28,7 +28,7 @@ applicants=[{'first_name': 'Alexandra', 'last_name': 'Ivan', 'gender':'female', 
     		{'first_name': 'David', 'last_name': 'Szilniczky', 'gender':'male','city': 'Krakow','email': 'szili.codecool@gmail.com','status': 'NEW'},
     		{'first_name': 'Fanni', 'last_name': 'Perjesi', 'gender':'female','city': 'Eger', 'email':'perj.codecool@gmail.com','status': 'NEW'}]
 for applicant in applicants:
-    Applicant.create(application_code="",first_name=applicant['first_name'], last_name=applicant['last_name'], gender=applicant['gender'], city=City.select().where(City.name==applicant['city']).get(), school=City.select().where(City.name==applicant['city']).get().school, email=applicant['email'], status=applicant['status'])
+    Applicant.create(status=applicant['status'], application_code="",first_name=applicant['first_name'], last_name=applicant['last_name'], gender=applicant['gender'], email=applicant['email'], city=City.select().where(City.name==applicant['city']).get(), school="")
 
 interview_slots=[{'start': '2017-09-01 09:00:00', 'end': '2017-09-01 13:00:00', 'reserved': False, 'mentor': None},
 				 {'start': '2017-09-02 10:00:00', 'end': '2017-09-02 14:00:00', 'reserved': False, 'mentor': None},
