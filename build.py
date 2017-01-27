@@ -1,5 +1,4 @@
 # This script can create the database tables based on your models
-from connect import create_database
 from models import *
 
 db.connect()
