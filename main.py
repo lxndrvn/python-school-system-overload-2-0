@@ -1,2 +1,3 @@
 # Write here your console application
-import menu
+from menu import *
+Menu()
