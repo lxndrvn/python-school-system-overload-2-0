@@ -12,25 +12,25 @@ def check_applications():
 def handle_new_applicants():
 	for applicant in Applicant.select().where(Applicant.status=="NEW"):
 		while applicant.application_code in [accepted.application_code for accepted in Applicant.select()]:
-		    applicant.application_code = "".join([str(random.randint(0,10)),str(random.randint(0,10)),str(random.randint(0,10))]) #if x not in [application.application_code for applicant in Applicant.select()]
-		applicant.school=applicant.city.school
-		applicant.status = "ACCEPTED"
-		applicant.save()
-		print(applicant.first_name,"accepted")
+        applicant.application_code = "".join([str(random.randint(0,10)),str(random.randint(0,10)),str(random.randint(0,10))]) #if x not in [application.application_code for applicant in Applicant.select()]
+        applicant.school=applicant.city.school
+        applicant.status = "ACCEPTED"
+        applicant.save()
+    print(applicant.first_name,"accepted")
 
 def new_application():
-	print("Let us know Your information to Apply!")
-	first_name=input("Given Name: ")
-	last_name=input("Familiy Name: ")
-	gender=input("Gender: ")
-	email=input("Email address: ")
-	city=input("Home city: ")
-	while city not in [city.name for city in City.select()]:
-		print("Sorry, application is not available in Your city Yet. Please move to an other one.")
-		city=input("Home city: ")
-	user=Applicant.create(status="NEW",application_code=None,first_name=first_name,last_name=last_name,gender=gender,email=email,city=City.select().where(City.name==city).get(),school=None)
-	return user
-	print('Application Successful! Review status in menu 1.')
+    print("Let us know Your information to Apply!")
+    first_name=input("Given Name: ")
+    last_name=input("Familiy Name: ")
+    gender=input("Gender: ")
+    email=input("Email address: ")
+    city=input("Home city: ")
+    while city not in [city.name for city in City.select()]:
+    print("Sorry, application is not available in Your city Yet. Please move to an other one.")
+    city=input("Home city: ")
+    user=Applicant.create(status="NEW",application_code=None,first_name=first_name,last_name=last_name,gender=gender,email=email,city=City.select().where(City.name==city).get(),school=None)
+    return user
+    print('Application Successful! Review status in menu 1.')
 
 def my_application(user):
 	print(user.status,"|",user.application_code,"|",user.first_name,"|",user.last_name,"|",user.city.name,"|",user.school.location if user.school!=None else None)
@@ -60,4 +60,4 @@ def interview_subscription():
 
 def check_interviews():
 	for interview in Interview.select():
-		print(interview.start,"|",interview.end,"|",interview.applicant.first_name,"|",interview.mentor.first_name)
+        print(interview.start,"|",interview.end,"|",interview.applicant.first_name,"|",interview.mentor.first_name)
