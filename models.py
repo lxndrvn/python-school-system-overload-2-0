@@ -15,7 +15,7 @@ class School(BaseModel):
 
 class City(BaseModel):
     name = CharField()
-    school = ForeignKeyField(School,related_name="school")
+    school = ForeignKeyField(School, related_name="school")
 
 
 class Applicant(BaseModel):
@@ -23,30 +23,30 @@ class Applicant(BaseModel):
     first_name = CharField()
     last_name = CharField()
     gender = CharField()
-    email = CharField(unique = True)
-    city = ForeignKeyField(City,null=True)
-    school = ForeignKeyField(School,null=True)
+    email = CharField(unique=True)
+    city = ForeignKeyField(City, null=True)
+    school = ForeignKeyField(School, null=True)
     status = CharField()
 
 
 class Mentor(BaseModel):
-    first_name=CharField()
-    last_name=CharField()
-    school=ForeignKeyField(School)
-    email=CharField()
+    first_name = CharField()
+    last_name = CharField()
+    school = ForeignKeyField(School)
+    email = CharField()
 
 
 class InterviewSlot(BaseModel):
-    start=CharField()
-    end=CharField()
-    availability=ForeignKeyField(Mentor,null=True)
+    start = CharField()
+    end = CharField()
+    availability = ForeignKeyField(Mentor, null=True)
 
 
 class Interview(BaseModel):
-    start=CharField()
-    end=CharField()
-    applicant=ForeignKeyField(Applicant,null=True)
-    mentor=ForeignKeyField(Mentor,null=True)
+    start = CharField()
+    end = CharField()
+    applicant = ForeignKeyField(Applicant, null=True)
+    mentor = ForeignKeyField(Mentor, null=True)
 
 
 class Question(BaseModel):
