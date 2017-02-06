@@ -90,7 +90,7 @@ class Interface(object):
             print(interviewslot.id, interviewslot.start, "|", interviewslot.end, "|", interviewslot.availability)
 
         interviewid = int(input("Choose a slot when we can get to know each other! "))
-        
+
         if InterviewSlot.select().where(InterviewSlot.id == interviewid).get().availability == 0:
             print("Sorry, we're all busy that time already, could we arrange an other time? ")
             self.subscribe_to_interview()
