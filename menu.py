@@ -9,22 +9,21 @@ class Menu(object):
 
         permission = input("Welcome to Codecool.\nPlease choose your permission.\n1.Applicant | 2.Mentor | 3.Admin | 0.Exit\n")
 
-        try:
-            permission = int(permission)
-            if not (0 <= permission <= 3):
-                print("Invalid Option, you needed to type a 1, 2, 3 or 0.")
-                Menu()
+        permission = int(permission)
+        if not (0 <= permission <= 3):
+            print("Invalid Option, you needed to type a 1, 2, 3 or 0.")
+            Menu()
 
-            if permission == 0:
-                exit()
-            elif permission == 1:
-                self.ApplicantMenu()
-            elif permission == 2:
-                self.MentorMenu()
-            elif permission == 3:
-                self.AdminMenu()
+        if permission == 0:
+            exit()
+        elif permission == 1:
+            self.ApplicantMenu()
+        elif permission == 2:
+            self.MentorMenu()
+        elif permission == 3:
+            self.AdminMenu()
 
-        except:
+        else:
             print("Invalid Option, you needed to type a 1, 2, 3 or 0.\n")
             Menu()
 
@@ -42,29 +41,25 @@ class Menu(object):
             if choice == 0:
                 Menu()
             if choice == 1:
-                global user
-                user = self.interface.apply()
                 self.ApplicantMenu()
             if choice == 2:
                 self.interface.subscribe_to_interview()
                 self.ApplicantMenu()
+
             if choice == 3:
-                if 'user' in globals():
-                    self.interface.show_application(user)
+                user = Applicant.select().where(Applicant.application_code == input("Select your application code (0 to cancel): "))
+                if user == "0":
+                    self.ApplicantMenu()
                 else:
-                    user = Applicant.select().where(Applicant.application_code == input("Select your application code (0 to cancel): "))
-                    if user == "0":
-                        self.ApplicantMenu()
-                    else:
-                        self.interface.show_application(user)
-                self.ApplicantMenu()
+                    self.interface.show_application(user)
+            self.ApplicantMenu()
 
         except:
             print("Invalid option, you needed to type a 1, 2, 3 or 0.\n")
             self.ApplicantMenu()
 
     def MentorMenu(self):
-        choice = input("1: Interviews | 2: Applicants | 0: Back\n")
+        choice = input("1: Interviews | 2: Questions | 0: Back\n")
 
         try:
             choice = int(choice)
@@ -89,26 +84,25 @@ class Menu(object):
     def AdminMenu(self):
         choice = input("1.Review Applications | 2.Accept New Applicants | 3.Check on Interviews | 0.Back\n")
 
-        try:
-            choice = int(choice)
-            if not (0 <= choice <= 2):
-                print("Invalid Option, you needed to type a 1, 2 or 0.\n")
-                self.AdminMenu()
+        choice = int(choice)
+        if not (0 <= choice <= 3):
+            print("Invalid Option, you needed to type a 1, 2, 3 or 0.\n")
+            self.AdminMenu()
 
-            os.system('cls' if os.name == 'nt' else 'clear')
+        os.system('cls' if os.name == 'nt' else 'clear')
 
-            if choice == 0:
-                Menu()
-            if choice == 1:
-                self.interface.check_applications()
-                self.AdminMenu()
-            if choice == 2:
-                self.interface.accept_new_applicants()
-                self.AdminMenu()
-            if choice == 3:
-                self.interface.check_interviews()
-                self.AdminMenu()
+        if choice == 0:
+            Menu()
+        elif choice == 1:
+            self.interface.check_applications()
+            self.AdminMenu()
+        elif choice == 2:
+            self.interface.accept_new_applicants()
+            self.AdminMenu()
+        elif choice == 3:
+            self.interface.check_interviews()
+            self.AdminMenu()
 
-        except:
-            print("Invalid Option, you needed to type a 1, 2 or 0.\n")
+        else:
+            print("Invalid Option, you needed to type a 1, 2 or 3.\n")
             self.AdminMenu()

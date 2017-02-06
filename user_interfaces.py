@@ -54,7 +54,7 @@ class Interface(object):
         email = input("Email address: ")
         city = input("Home city: ")
         while city not in [city.name for city in City.select()]:
-            print("Sorry, application is not available in Your city Yet. Please move to an other one.")
+            print("Sorry, application is not available in Your city Yet. Please select another one.")
             city = input("Home city: ")
         print('Application Successful! Review status in menu 1.')
         user = Applicant.create(
@@ -109,30 +109,52 @@ class Interface(object):
 
     def check_interviews(self):
         for interview in Interview.select():
-            print(interview.start, "|", interview.end, "|", interview.applicant.first_name, "|",
-                  interview.mentor.first_name)
+            self.print_interview_data(interview)
+
         filter = input("FILTER: 1.By School 2.By Applicant 3.By Mentor 4.By date EXIT: 0. ")
+
         if filter == "0":
             return
         if filter == "1":
-            for interview in Interview.select().where(
-                            Interview.mentor.school.location == input("Applications to School: ")):
-                print(interview.start, "|", interview.end, "|", interview.applicant.first_name, "|",
-                      interview.mentor.first_name)
+            self.filter_by_school()
+
         if filter == "2":
-            applicant = Interview.select().where(Interview.applicant.application_code == input("Applicant code: ")).get()
-            for interview in applicant:
-                print(interview.start, "|", interview.end, "|", interview.applicant.first_name, "|",
-                      interview.mentor.first_name)
+            self.filter_by_applicant()
+
         if filter == "3":
-            mentor = Interview.select().where(Interview.mentor.first_name == input("Mentor name: "))
-            for interview in mentor:
-                print(interview.start, "|", interview.end, "|", interview.applicant.first_name, "|",
-                      interview.mentor.first_name)
+            self.filter_by_mentor()
+
         if filter == "4":
             for interview in Interview.select().where(Interview.start == input("Find a date: ")):
-                print(interview.start, "|", interview.end, "|", interview.applicant.first_name, "|",
-                      interview.mentor.first_name)
+                self.print_interview_data(interview)
+
+    def filter_by_school(self):
+        school = input("Applications to School: ")
+        mentors = School.select().where(School.location == school).get().mentors
+        for mentor in mentors:
+            for interview in mentor.interviews:
+                self.print_interview_data(interview)
+
+    def filter_by_applicant(self):
+        code = input("Applicant code: ")
+        applicant = Applicant.select().where(Applicant.application_code == code).get()
+        for interview in applicant.interviews:
+            self.print_interview_data(interview)
+
+    def filter_by_mentor(self):
+        mentor_name = input("Mentor's first name: ")
+        mentor = Mentor.select().where(Mentor.first_name == mentor_name).get()
+        for interview in mentor.interviews:
+            self.print_interview_data(interview)
+
+    @staticmethod
+    def print_interview_data(interview):
+        print(
+            interview.start, "|",
+            interview.end, "|",
+            interview.applicant.first_name, "|",
+            interview.mentor.first_name
+        )
 
     def interview_duty(self):
         mentoremail = input("Sign in with Your mentor email address (0 to cancel): ")
