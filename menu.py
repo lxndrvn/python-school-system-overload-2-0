@@ -1,6 +1,7 @@
 from models import *
 import user_interfaces
 import os
+from new_questions import *
 
 
 class Menu(object):
@@ -28,12 +29,12 @@ class Menu(object):
             Menu()
 
     def ApplicantMenu(self):
-        choice = input("1.Apply | 2.Interview Subscription | 3.My Application 0.Back\n")
+        choice = input("1.Apply | 2.Interview Subscription | 3.My Application | 4. Question | 0.Back\n")
 
         try:
             choice = int(choice)
-            if not (0 <= choice <= 3):
-                print("Invalid Option, you needed to type a 1, 2, 3 or 0.\n")
+            if not (0 <= choice <= 4):
+                print("Invalid Option, you needed to type a 1, 2, 3, 4 or 0.\n")
                 self.ApplicantMenu()
 
             os.system('cls' if os.name == 'nt' else 'clear')
@@ -52,6 +53,9 @@ class Menu(object):
                     self.ApplicantMenu()
                 else:
                     self.interface.show_application(user)
+            if choice == 4:
+                question = input("What is your question?")
+                QuestionInterface.new_question(question)
             self.ApplicantMenu()
 
         except:
@@ -82,11 +86,13 @@ class Menu(object):
             self.MentorMenu()
 
     def AdminMenu(self):
-        choice = input("1.Review Applications | 2.Accept New Applicants | 3.Check on Interviews | 0.Back\n")
+        choice = input("1.Review Applications | 2.Accept New Applicants | 3.Check on Interviews | \
+        4. Check new questions | 0.Back\n")
+
 
         choice = int(choice)
-        if not (0 <= choice <= 3):
-            print("Invalid Option, you needed to type a 1, 2, 3 or 0.\n")
+        if not (0 <= choice <= 4):
+            print("Invalid Option, you needed to type a 1, 2, 3, 4 or 0.\n")
             self.AdminMenu()
 
         os.system('cls' if os.name == 'nt' else 'clear')
@@ -101,6 +107,9 @@ class Menu(object):
             self.AdminMenu()
         elif choice == 3:
             self.interface.check_interviews()
+            self.AdminMenu()
+        elif choice == 4:
+            QuestionInterface.new_question_list()
             self.AdminMenu()
 
         else:
