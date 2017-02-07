@@ -32,7 +32,7 @@ class Applicant(BaseModel):
 class Mentor(BaseModel):
     first_name = CharField()
     last_name = CharField()
-    school = ForeignKeyField(School)
+    school = ForeignKeyField(School, related_name="mentors")
     email = CharField()
 
 
@@ -45,8 +45,8 @@ class InterviewSlot(BaseModel):
 class Interview(BaseModel):
     start = CharField()
     end = CharField()
-    applicant = ForeignKeyField(Applicant, null=True)
-    mentor = ForeignKeyField(Mentor, null=True)
+    applicant = ForeignKeyField(Applicant, related_name="interviews", null=True)
+    mentor = ForeignKeyField(Mentor, related_name="interviews", null=True)
 
 
 class Question(BaseModel):
