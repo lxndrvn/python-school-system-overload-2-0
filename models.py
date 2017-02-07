@@ -50,8 +50,14 @@ class Interview(BaseModel):
 
 
 class Question(BaseModel):
-    pass
+    question = CharField()
+    status = CharField(default="new")
+    applicant = ForeignKeyField(Applicant, related_name="questions")
+    mentor = ForeignKeyField(Mentor, related_name="questions", null=True)
+    date = DateTimeField()
 
 
 class Answer(BaseModel):
-    pass
+    answer = CharField()
+    question = ForeignKeyField(Question, related_name="answers")
+
