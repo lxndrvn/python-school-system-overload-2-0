@@ -1,6 +1,5 @@
 # This script can generate example data for 'City' and 'InterviewSlot' models.
 
-from models import *
 
 class ExampleData():
     def __init__(self):
