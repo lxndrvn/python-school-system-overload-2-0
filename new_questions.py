@@ -8,17 +8,6 @@ class QuestionInterface:
     def new_question(question):
         Question(question)
 
-    @staticmethod
-    def new_questions():
-        return [question for question in Question.select().where(Question.status == "NEW")]
-
-    @classmethod
-    def new_question_list(cls):
-        question_list = cls.new_questions()
-        for question in question_list:
-            for attribute in question.__dict__['_data']:
-                print(attribute)
-
 
     def accept_new_questions(self):
         for question in self.new_questions:

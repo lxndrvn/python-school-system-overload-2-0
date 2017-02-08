@@ -109,7 +109,7 @@ class Menu(object):
             self.interface.check_interviews()
             self.AdminMenu()
         elif choice == 4:
-            QuestionInterface.new_question_list()
+            Question.print_table(query=Question.select().where(Question.status == "NEW"))
             self.AdminMenu()
 
         else:
