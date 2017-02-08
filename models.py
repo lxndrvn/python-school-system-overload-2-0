@@ -8,6 +8,27 @@ class BaseModel(Model):
     class Meta:
         database = db
 
+    @classmethod
+    def print_table(cls,query):
+        cls.query=query
+        records=[record for record in query]
+        fields=sorted(list(records[0].__dict__['_data'].keys()))
+        print(" "*(sum([max([len(str(column.__dict__['_data'][field])) for column in records]+[len(str(field))])+3 for field in fields])//2)+cls.__name__)
+        print(" /"+"-"*(sum([max([len(str(column.__dict__['_data'][field])) for column in records]+[len(str(field))])+3 for field in fields])-1)+"\\")
+        for field in fields:
+            fieldspan=max([len(str(column.__dict__['_data'][field])) for column in records]+[len(str(field))])
+            justify=" "*(fieldspan-len(field))
+            print(" | "+field.upper()+justify,end="")
+        print(" |")
+        for record in records:
+            for field in fields:
+                value=str(record.__dict__['_data'][field])
+                fieldspan=max([len(str(column.__dict__['_data'][field])) for column in records]+[len(str(field))])
+                justify=" "*(fieldspan-len(value))
+                print(" | "+value+justify,end="")
+        print(" |")
+        print(" \\"+"-"*(sum([max([len(str(column.__dict__['_data'][field])) for column in records]+[len(str(field))])+3 for field in fields])-1)+"/")
+
 
 class School(BaseModel):
     location = CharField()
@@ -51,8 +72,8 @@ class Interview(BaseModel):
 
 class Question(BaseModel):
     question = CharField()
-    status = CharField(default="new")
-    applicant = ForeignKeyField(Applicant, related_name="questions")
+    status = CharField(default="NEW")
+    applicant_code = ForeignKeyField(Applicant, related_name="questions", null=True )
     mentor = ForeignKeyField(Mentor, related_name="questions", null=True)
     date = DateTimeField()
 
