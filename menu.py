@@ -1,4 +1,3 @@
-from models import *
 import user_interfaces
 import os
 from new_questions import *
