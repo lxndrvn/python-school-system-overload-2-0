@@ -2,4 +2,3 @@
 from menu import *
 
 Menu()
-
