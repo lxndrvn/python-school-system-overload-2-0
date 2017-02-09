@@ -53,9 +53,9 @@ interview_slots=[{'start': '2017-09-01 09:00:00', 'end': '2017-09-01 13:00:00'},
 
 for interview_slot in interview_slots:
     InterviewSlot.create(start=interview_slot['start'], end=interview_slot['end'],
-                         availability=Mentor.select().where(Mentor.school==bpschool).count())
+                         mentor=interview_slot['mentor'])
 
-questions = [{'question': 'Could you give me a (KOA)LAptop?', 'mentor': 'Laci',
+questions = [{'question': 'Could you give me a (KOA)Laptop?', 'mentor': 'Laci',
               'date': '2017-09-05 17:00:00' }]
 
 for question in questions:
