@@ -1,4 +1,7 @@
 # Write here your console application
 from menu import *
 
-Menu()
+if __name__=='__main__':
+    menu=Menu()
+    while menu.session==True:
+        menu=Login()

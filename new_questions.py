@@ -5,6 +5,8 @@ import time
 import random
 
 class QuestionInterface:
+    def __init__(self):
+        self.questions=Question.select()
 
     def new_question(question=None,user=None):
         if user not in [applicant.application_code for applicant in Applicant.select()]:
@@ -21,23 +23,13 @@ class QuestionInterface:
             question.save()
             print("Question", question.id, "was assigned to", question.mentor)
 
-    def check_questions(self):
-        for question in self.question:
-            print(
-                question.status, "|",
-                question.questions, "|",
-                question.answer, "|",
-                question.mentor, "|",
-                question.applicant, "|",
-            )
-        print(
-            'There are',
-            len(self.new_questions),
-            'new questions! woohoo! Send to mentors to answer them!'
-        )
+    def check_questions():
+        condition=Question.status=="NEW"
+        Question.print_table(condition)
+        print('There are',len(Question.select().where(condition)),'new questions! woohoo! Send to mentors to answer them!')
 
-    def give_answer(self):
-        answer = Question.select(Applicant, Question).join(Applicant)
-        for data in answer:
-            print(data.question.questions, "|", data.question.status, "|", data.answer, "|")
+    def reply():
+        mentoremail=input("email: ")
+        mentor=Mentor.select().where(Mentor.email == mentoremail).get()
+        Question.print_table(Question.mentor==mentor)
 

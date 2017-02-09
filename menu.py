@@ -2,117 +2,69 @@ import user_interfaces
 import os
 from new_questions import *
 
-
 class Menu(object):
-    def __init__(self):
+    def __init__(self,session=True,login=False):
         self.interface = user_interfaces.Interface()
-
-        permission = input("Welcome to Codecool.\nPlease choose your permission.\n1.Applicant | 2.Mentor | 3.Admin | 0.Exit\n")
-
-        permission = int(permission)
-        if not (0 <= permission <= 3):
-            print("Invalid Option, you needed to type a 1, 2, 3 or 0.")
-            Menu()
-
-        if permission == 0:
-            exit()
-        elif permission == 1:
-            self.ApplicantMenu()
-        elif permission == 2:
-            self.MentorMenu()
-        elif permission == 3:
-            self.AdminMenu()
-
-        else:
-            print("Invalid Option, you needed to type a 1, 2, 3 or 0.\n")
-            Menu()
-
-    def ApplicantMenu(self):
-        choice = input("1.Apply | 2.Interview Subscription | 3.My Application | 4. Question | 0.Back\n")
-
-        choice = int(choice)
-        if not (0 <= choice <= 4):
-            print("Invalid Option, you needed to type a 1, 2, 3, 4 or 0.\n")
-            self.ApplicantMenu()
-
-            os.system('cls' if os.name == 'nt' else 'clear')
-
-        if choice == 0:
-            Menu()
-        elif choice == 1:
-            self.interface.apply()
-            self.ApplicantMenu()
-        elif choice == 2:
-            self.interface.subscribe_to_interview()
-            self.ApplicantMenu()
-        elif choice == 3:
-            user = Applicant.select().where(Applicant.application_code == input("Select your application code (0 to cancel): "))
-            if user == "0":
-                self.ApplicantMenu()
-            else:
-                self.interface.show_application(user)
-        elif choice == 4:
-            user=input("What's Your application code? ")
-            QuestionInterface.new_question(user=user)
-            self.ApplicantMenu()
-
-        else:
-            print("Invalid option, you needed to type a 1, 2, 3 or 0.\n")
-            self.ApplicantMenu()
-
-    def MentorMenu(self):
-        choice = input("1: Interviews | 2: Questions | 0: Back\n")
-
-        choice = int(choice)
-        if not (0 <= choice <= 2):
-            print("Invalid Option, you needed to type a 1, 2 or 0.\n")
-            self.MentorMenu()
-
+        self.session=session
         os.system('cls' if os.name == 'nt' else 'clear')
 
-        if choice == 0:
-            Menu()
-        elif choice == 1:
-            mentoremail = input("Sign in with Your mentor email address (0 to cancel): ")
-            if mentoremail == "0":
-                return
-            teacher = Mentor.select().where(Mentor.email == mentoremail).get()
-            Interview.print_table(query=Interview.select().where(Interview.mentor == teacher))
-            self.interface.interview_duty()
-            self.MentorMenu()
-        elif choice == 2:
-            self.MentorMenu()
+    def opt(self):
+        for option in self.options:
+            index=self.options.index(option)
+            function=option.__name__.translate({ord("_"):" ",})
+            print(index,function,end=" ")
+        self.option = int(input())
+        if self.option not in range(len(self.options)):
+            while self.option not in range(len(self.options)):
+                self.option=int(input("Invalid Option, choose up to",len(self.options)-1))
+        self.options[self.option]()
 
-        else:
-            print("Invalid option, you needed to type a 1, 2, 3 or 0.\n")
-            self.MentorMenu()
+    def exit(self):
+        self.session=False
 
-    def AdminMenu(self):
-        choice = input("1.Review Applications | 2.Accept New Applicants | 3.Check on Interviews | \
-        4. Check new questions | 0.Back\n")
+    def logout(self):
+        self.login=False
 
-        choice = int(choice)
-        if not (0 <= choice <= 4):
-            print("Invalid Option, you needed to type a 1, 2, 3, 4 or 0.\n")
-            self.AdminMenu()
 
-        os.system('cls' if os.name == 'nt' else 'clear')
+class Login(Menu):
+    def __init__(self):
+        super().__init__()
+        self.options = [self.exit,Applicant,Mentor,Admin]
+        print("Welcome to Codecool! \nChoose user to log in: ")
+        self.opt()
 
-        if choice == 0:
-            Menu()
-        elif choice == 1:
-            Applicant.print_table(query=Applicant.select())
-            self.AdminMenu()
-        elif choice == 2:
-            self.interface.accept_new_applicants()
-            self.AdminMenu()
-        elif choice == 3:
-            self.interface.check_interviews()
-            self.AdminMenu()
-        elif choice == 4:
-            Question.print_table(query=Question.select().where(Question.status == "NEW"))
-            self.AdminMenu()
 
-        else:
-            print("Invalid Option, you needed to type a 1, 2 or 3.\n")
-            self.AdminMenu()
+class Applicant(Menu):
+    def __init__(self,login=True,user=None):
+        super().__init__()
+        self.login=login
+        self.options = [self.logout,self.interface.apply,self.interface.subscribe_to_interview,self.interface.show_application,QuestionInterface.new_question]
+        print("logged in as",self.__class__.__name__)
+        while self.login==True:
+            self.opt()
+
+
+class Mentor(Menu):
+    def __init__(self,login=True,user=None):
+        super().__init__()
+        email=input()
+        emails=[mentor.email for mentor in self.interface.mentors]
+        if email not in emails:
+            while email not in emails:
+                if email == "0": return
+                email=input("Invalid email, try again ")
+        self.login=True
+        self.options = [self.logout,self.interface.interview_duty,QuestionInterface.reply]
+        print("logged in as",self.interface.mentors.where(Mentor.email==email))
+        while self.login==True:
+            self.opt()
+
+
+class Admin(Menu):
+    def __init__(self,login=False,user=None):
+        super().__init__()
+        self.login=True
+        self.options = [self.logout,self.interface.check_applications,self.interface.accept_new_applicants,self.interface.check_interviews,QuestionInterface.check_questions]
+        print("logged in as",self.__class__.__name__)
+        while self.login==True:
+            self.opt()
