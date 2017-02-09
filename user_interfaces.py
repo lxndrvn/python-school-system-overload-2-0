@@ -53,15 +53,8 @@ class Interface(object):
         return user
 
     @staticmethod
-    def show_application(user=None):
-        print(
-            user.status, "|",
-            user.application_code, "|",
-            user.first_name, "|",
-            user.last_name, "|",
-            user.city.name, "|",
-            user.school.location if user.school != None else None
-        )
+    def show_application():
+        Applicant.print_table(applicant)
 
     def subscribe_to_interview(self):
         key = input("Provide Your application code to make an appointment (0 to cancel): ")
