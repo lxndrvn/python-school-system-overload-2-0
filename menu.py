@@ -70,14 +70,18 @@ class Menu(object):
 
         os.system('cls' if os.name == 'nt' else 'clear')
 
-            if choice == 0:
-                Menu()
-            if choice == 1:
-                self.interface.interview_duty()
-                self.MentorMenu()
-            if choice == 2:
-                print('Which questions do you want to answer?:')
-                self.MentorMenu()
+        if choice == 0:
+            Menu()
+        elif choice == 1:
+            mentoremail = input("Sign in with Your mentor email address (0 to cancel): ")
+            if mentoremail == "0":
+                return
+            teacher = Mentor.select().where(Mentor.email == mentoremail).get()
+            Interview.print_table(query=Interview.select().where(Interview.mentor == teacher))
+            self.interface.interview_duty()
+            self.MentorMenu()
+        elif choice == 2:
+            self.MentorMenu()
 
         else:
             print("Invalid option, you needed to type a 1, 2, 3 or 0.\n")
@@ -97,7 +101,7 @@ class Menu(object):
         if choice == 0:
             Menu()
         elif choice == 1:
-            self.interface.check_applications()
+            Applicant.print_table(query=Applicant.select())
             self.AdminMenu()
         elif choice == 2:
             self.interface.accept_new_applicants()
