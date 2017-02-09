@@ -26,7 +26,7 @@ class BaseModel(Model):
                 fieldspan=max([len(str(column.__dict__['_data'][field])) for column in records]+[len(str(field))])
                 justify=" "*(fieldspan-len(value))
                 print(" | "+value+justify,end="")
-        print(" |")
+            print(" |")
         print(" \\"+"-"*(sum([max([len(str(column.__dict__['_data'][field])) for column in records]+[len(str(field))])+3 for field in fields])-1)+"/")
 
 

@@ -66,23 +66,27 @@ class Menu(object):
     def MentorMenu(self):
         choice = input("1: Interviews | 2: Questions | 0: Back\n")
 
-        try:
-            choice = int(choice)
-            if not (0 <= choice <= 2):
-                print("Invalid Option, you needed to type a 1, 2 or 0.\n")
-                self.MentorMenu()
+        choice = int(choice)
+        if not (0 <= choice <= 2):
+            print("Invalid Option, you needed to type a 1, 2 or 0.\n")
+            self.MentorMenu()
 
-            os.system('cls' if os.name == 'nt' else 'clear')
+        os.system('cls' if os.name == 'nt' else 'clear')
 
-            if choice == 0:
-                Menu()
-            if choice == 1:
-                self.interface.interview_duty()
-                self.MentorMenu()
-            if choice == 2:
-                self.MentorMenu()
+        if choice == 0:
+            Menu()
+        elif choice == 1:
+            mentoremail = input("Sign in with Your mentor email address (0 to cancel): ")
+            if mentoremail == "0":
+                return
+            teacher = Mentor.select().where(Mentor.email == mentoremail).get()
+            Interview.print_table(query=Interview.select().where(Interview.mentor == teacher))
+            self.interface.interview_duty()
+            self.MentorMenu()
+        elif choice == 2:
+            self.MentorMenu()
 
-        except:
+        else:
             print("Invalid option, you needed to type a 1, 2, 3 or 0.\n")
             self.MentorMenu()
 
@@ -100,7 +104,7 @@ class Menu(object):
         if choice == 0:
             Menu()
         elif choice == 1:
-            self.interface.check_applications()
+            Applicant.print_table(query=Applicant.select())
             self.AdminMenu()
         elif choice == 2:
             self.interface.accept_new_applicants()
