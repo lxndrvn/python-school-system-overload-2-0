@@ -64,16 +64,14 @@ class InterviewSlot(BaseModel):
 
 
 class Interview(BaseModel):
-    start = CharField()
-    end = CharField()
     applicant = ForeignKeyField(Applicant, related_name="interviews", null=True)
-    mentor = ForeignKeyField(Mentor, related_name="interviews", null=True)
+    interview_slot = ForeignKeyField(InterviewSlot, related_name="interviews", null=True)
 
 
 class Question(BaseModel):
     question = CharField()
     status = CharField(default="NEW")
-    applicant_code = ForeignKeyField(Applicant, related_name="questions", null=True )
+    applicant = ForeignKeyField(Applicant, related_name="questions", null=True)
     mentor = ForeignKeyField(Mentor, related_name="questions", null=True)
     date = DateTimeField()
 

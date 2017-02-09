@@ -132,7 +132,7 @@ class Interface(object):
         school = input("Applications to School: ")
         mentors = School.select().where(School.location == school).get().mentors
         for mentor in mentors:
-            for interview in mentor.interviews:
+            for interview in [interview for interview in Interview.select().where(Interview.interview_slot.mentor == mentor)]:
                 self.print_interview_data(interview)
 
     def filter_by_applicant(self):

@@ -30,36 +30,33 @@ class Menu(object):
     def ApplicantMenu(self):
         choice = input("1.Apply | 2.Interview Subscription | 3.My Application | 4. Question | 0.Back\n")
 
-        try:
-            choice = int(choice)
-            if not (0 <= choice <= 4):
-                print("Invalid Option, you needed to type a 1, 2, 3, 4 or 0.\n")
-                self.ApplicantMenu()
+        choice = int(choice)
+        if not (0 <= choice <= 4):
+            print("Invalid Option, you needed to type a 1, 2, 3, 4 or 0.\n")
+            self.ApplicantMenu()
 
             os.system('cls' if os.name == 'nt' else 'clear')
 
-            if choice == 0:
-                Menu()
-            if choice == 1:
-                self.interface.apply()
+        if choice == 0:
+            Menu()
+        elif choice == 1:
+            self.interface.apply()
+            self.ApplicantMenu()
+        elif choice == 2:
+            self.interface.subscribe_to_interview()
+            self.ApplicantMenu()
+        elif choice == 3:
+            user = Applicant.select().where(Applicant.application_code == input("Select your application code (0 to cancel): "))
+            if user == "0":
                 self.ApplicantMenu()
-            if choice == 2:
-                self.interface.subscribe_to_interview()
-                self.ApplicantMenu()
-
-            if choice == 3:
-                user = Applicant.select().where(Applicant.application_code == input("Select your application code (0 to cancel): "))
-                if user == "0":
-                    self.ApplicantMenu()
-                else:
-                    self.interface.show_application(user)
-
-            if choice == 4:
-                question = input("What is your question?")
-                QuestionInterface.new_question(question)
+            else:
+                self.interface.show_application(user)
+        elif choice == 4:
+            user=input("What's Your application code? ")
+            QuestionInterface.new_question(user=user)
             self.ApplicantMenu()
 
-        except:
+        else:
             print("Invalid option, you needed to type a 1, 2, 3 or 0.\n")
             self.ApplicantMenu()
 
@@ -91,8 +88,8 @@ class Menu(object):
             self.MentorMenu()
 
     def AdminMenu(self):
-        choice = input("1.Review Applications | 2.Accept New Applicants | 3.Check on Interviews | 4. Check new questions | 0.Back\n")
-
+        choice = input("1.Review Applications | 2.Accept New Applicants | 3.Check on Interviews | \
+        4. Check new questions | 0.Back\n")
 
         choice = int(choice)
         if not (0 <= choice <= 4):
