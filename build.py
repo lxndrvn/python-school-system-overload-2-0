@@ -45,15 +45,15 @@ for applicant in applicants:
                      last_name=applicant['last_name'], email=applicant['email'], gender=applicant['gender'],
                      city=City.select().where(City.name==applicant['city']).get(), school=None)
 
-interview_slots=[{'start': '2017-09-01 09:00:00', 'end': '2017-09-01 13:00:00'},
-                 {'start': '2017-09-02 10:00:00', 'end': '2017-09-02 14:00:00'},
-                 {'start': '2017-09-03 11:00:00', 'end': '2017-09-03 15:00:00'},
-                 {'start': '2017-09-04 12:00:00', 'end': '2017-09-04 16:00:00'},
-                 {'start': '2017-09-05 13:00:00', 'end': '2017-09-05 17:00:00'}]
+interview_slots=[{'start': '2017-09-01 09:00:00', 'end': '2017-09-01 13:00:00', 'mentor': 'Matyi'},
+                 {'start': '2017-09-02 10:00:00', 'end': '2017-09-02 14:00:00', 'mentor': 'Laci'},
+                 {'start': '2017-09-03 11:00:00', 'end': '2017-09-03 15:00:00', 'mentor': 'Imi'},
+                 {'start': '2017-09-04 12:00:00', 'end': '2017-09-04 16:00:00', 'mentor': 'Robert'},
+                 {'start': '2017-09-05 13:00:00', 'end': '2017-09-05 17:00:00', 'mentor': 'Agnieszka'}]
 
 for interview_slot in interview_slots:
     InterviewSlot.create(start=interview_slot['start'], end=interview_slot['end'],
-                         mentor=interview_slot['mentor'])
+                         mentor=Mentor.select().where(Mentor.first_name == interview_slot['mentor']))
 
 questions = [{'question': 'Could you give me a (KOA)Laptop?', 'mentor': 'Laci',
               'date': '2017-09-05 17:00:00' }]
