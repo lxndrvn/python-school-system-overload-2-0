@@ -8,6 +8,7 @@ from models import *
 class Interface(object):
     def __init__(self):
         self.applicants = Applicant.select()
+        self.mentors = Mentor.select()
 
     @property
     def new_applicants(self):
@@ -22,20 +23,9 @@ class Interface(object):
             return new_code
 
     def check_applications(self):
-        for applicant in self.applicants:
-            print(
-                applicant.status, "|",
-                applicant.application_code, "|",
-                applicant.first_name, "|",
-                applicant.last_name, "|",
-                applicant.city.name, "|",
-                applicant.school.location if applicant.school else None
-            )
-        print(
-            'There are',
-            len(self.new_applicants),
-            'new applicants! woohoo! Accept them buddy!'
-        )
+        Applicant.print_table()
+        print('There are',len(Applicant.select().where(Applicant.status=="NEW")),
+            'new applicants! woohoo! Accept them buddy!')
 
     def accept_new_applicants(self):
         for applicant in self.new_applicants:
