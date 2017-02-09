@@ -35,7 +35,7 @@ class Menu(object):
             print("Invalid Option, you needed to type a 1, 2, 3, 4 or 0.\n")
             self.ApplicantMenu()
 
-        os.system('cls' if os.name == 'nt' else 'clear')
+            os.system('cls' if os.name == 'nt' else 'clear')
 
         if choice == 0:
             Menu()
@@ -63,13 +63,12 @@ class Menu(object):
     def MentorMenu(self):
         choice = input("1: Interviews | 2: Questions | 0: Back\n")
 
-        try:
-            choice = int(choice)
-            if not (0 <= choice <= 2):
-                print("Invalid Option, you needed to type a 1, 2 or 0.\n")
-                self.MentorMenu()
+        choice = int(choice)
+        if not (0 <= choice <= 2):
+            print("Invalid Option, you needed to type a 1, 2 or 0.\n")
+            self.MentorMenu()
 
-            os.system('cls' if os.name == 'nt' else 'clear')
+        os.system('cls' if os.name == 'nt' else 'clear')
 
             if choice == 0:
                 Menu()
@@ -80,8 +79,8 @@ class Menu(object):
                 print('Which questions do you want to answer?:')
                 self.MentorMenu()
 
-        except:
-            print("Invalid option, you needed to type a 1, 2 or 0.\n")
+        else:
+            print("Invalid option, you needed to type a 1, 2, 3 or 0.\n")
             self.MentorMenu()
 
     def AdminMenu(self):

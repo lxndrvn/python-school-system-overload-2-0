@@ -80,17 +80,19 @@ class Interface(object):
         elif key not in [applicant.application_code for applicant in self.applicants]:
             print("No such application in our records. ")
             self.subscribe_to_interview()
+        print(key)
 
         applicant = self.applicants.where(Applicant.application_code == key).get()
+        print(applicant)
 
-        InterviewSlot.update(availability=Mentor.select().where(Mentor.school == applicant.school).count()).execute()
+        InterviewSlot.update(mentor=Mentor.select().where(Mentor.school == applicant.school).count()).execute()
 
         for interviewslot in InterviewSlot.select():
-            print(interviewslot.id, interviewslot.start, "|", interviewslot.end, "|", interviewslot.availability)
+            print(interviewslot.id, interviewslot.start, "|", interviewslot.end, "|", interviewslot.mentor)
 
         interviewid = int(input("Choose a slot when we can get to know each other! "))
 
-        if InterviewSlot.select().where(InterviewSlot.id == interviewid).get().availability == 0:
+        if InterviewSlot.select().where(InterviewSlot.id == interviewid).get().mentor == 0:
             print("Sorry, we're all busy that time already, could we arrange an other time? ")
             self.subscribe_to_interview()
         else:
@@ -130,7 +132,7 @@ class Interface(object):
         school = input("Applications to School: ")
         mentors = School.select().where(School.location == school).get().mentors
         for mentor in mentors:
-            for interview in mentor.interviews:
+            for interview in [interview for interview in Interview.select().where(Interview.interview_slot.mentor == mentor)]:
                 self.print_interview_data(interview)
 
     def filter_by_applicant(self):
