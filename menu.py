@@ -41,6 +41,7 @@ class Menu(object):
             if choice == 0:
                 Menu()
             if choice == 1:
+                self.interface.apply()
                 self.ApplicantMenu()
             if choice == 2:
                 self.interface.subscribe_to_interview()
@@ -52,6 +53,7 @@ class Menu(object):
                     self.ApplicantMenu()
                 else:
                     self.interface.show_application(user)
+
             if choice == 4:
                 question = input("What is your question?")
                 QuestionInterface.new_question(question)
@@ -85,8 +87,7 @@ class Menu(object):
             self.MentorMenu()
 
     def AdminMenu(self):
-        choice = input("1.Review Applications | 2.Accept New Applicants | 3.Check on Interviews | \
-        4. Check new questions | 0.Back\n")
+        choice = input("1.Review Applications | 2.Accept New Applicants | 3.Check on Interviews | 4. Check new questions | 0.Back\n")
 
 
         choice = int(choice)

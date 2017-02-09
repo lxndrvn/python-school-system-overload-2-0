@@ -60,7 +60,7 @@ class Mentor(BaseModel):
 class InterviewSlot(BaseModel):
     start = CharField()
     end = CharField()
-    availability = ForeignKeyField(Mentor, null=True)
+    mentor = ForeignKeyField(Mentor, null=True)
 
 
 class Interview(BaseModel):
