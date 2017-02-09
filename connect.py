@@ -1,6 +1,5 @@
 from peewee import PostgresqlDatabase
 
-
 def create_database():
     with open("connection.txt", "r") as f:
         data_lines = f.readlines()

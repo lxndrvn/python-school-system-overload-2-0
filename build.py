@@ -1,21 +1,23 @@
 # This script can create the database tables based on your models
+import connect
 from models import *
 
+db = connect.create_database()
+
 db.connect()
-db.drop_tables([School, City, Applicant, Mentor, InterviewSlot, Interview], safe=True,	cascade=True)
-# List the tables here what you want to create...
-db.create_tables([School, City, Applicant, Mentor, InterviewSlot, Interview], safe=True)
+db.drop_tables([School, City, Applicant, Mentor, InterviewSlot, Interview, Question], safe=True, cascade=True)
+db.create_tables([School, City, Applicant, Mentor, InterviewSlot, Interview, Question], safe=True)
 
 bpschool = School.create(location='Budapest')
 misischool = School.create(location='Miskolc')
 krakowschool = School.create(location='Krakow')
 
 cities = [{'name': 'Budapest', 'school': bpschool},
-          {'name': 'Székesfehérvár', 'school': bpschool},
-          {'name': 'Miskolc', 'school': misischool},
-          {'name': 'Eger', 'school': misischool},
-          {'name': 'Krakow', 'school': krakowschool},
-          {'name': 'Warsaw', 'school': krakowschool}]
+                  {'name': 'Székesfehérvár', 'school': bpschool},
+                  {'name': 'Miskolc', 'school': misischool},
+                  {'name': 'Eger', 'school': misischool},
+                  {'name': 'Krakow', 'school': krakowschool},
+                  {'name': 'Warsaw', 'school': krakowschool}]
 
 for city in cities:
     City.create(name=city['name'],school=city['school'])
@@ -43,12 +45,18 @@ for applicant in applicants:
                      last_name=applicant['last_name'], email=applicant['email'], gender=applicant['gender'],
                      city=City.select().where(City.name==applicant['city']).get(), school=None)
 
-interview_slots=[{'start': '2017-09-01 09:00:00', 'end': '2017-09-01 13:00:00'},
-                 {'start': '2017-09-02 10:00:00', 'end': '2017-09-02 14:00:00'},
-                 {'start': '2017-09-03 11:00:00', 'end': '2017-09-03 15:00:00'},
-                 {'start': '2017-09-04 12:00:00', 'end': '2017-09-04 16:00:00'},
-                 {'start': '2017-09-05 13:00:00', 'end': '2017-09-05 17:00:00'}]
+interview_slots=[{'start': '2017-09-01 09:00:00', 'end': '2017-09-01 13:00:00', 'mentor': 'Matyi'},
+                 {'start': '2017-09-02 10:00:00', 'end': '2017-09-02 14:00:00', 'mentor': 'Laci'},
+                 {'start': '2017-09-03 11:00:00', 'end': '2017-09-03 15:00:00', 'mentor': 'Imi'},
+                 {'start': '2017-09-04 12:00:00', 'end': '2017-09-04 16:00:00', 'mentor': 'Robert'},
+                 {'start': '2017-09-05 13:00:00', 'end': '2017-09-05 17:00:00', 'mentor': 'Agnieszka'}]
 
 for interview_slot in interview_slots:
     InterviewSlot.create(start=interview_slot['start'], end=interview_slot['end'],
-                         availability=Mentor.select().where(Mentor.school==bpschool).count())
+                         mentor=Mentor.select().where(Mentor.first_name == interview_slot['mentor']))
+
+questions = [{'question': 'Could you give me a (KOA)Laptop?', 'mentor': 'Laci',
+              'date': '2017-09-05 17:00:00' }]
+
+for question in questions:
+    Question.create(question=question['question'], date=question['date'])

@@ -1,13 +1,19 @@
-from models import *
 import user_interfaces
 import os
+from new_questions import *
 
 
 class Menu(object):
     def __init__(self):
         self.interface = user_interfaces.Interface()
 
-        permission = int(input("Welcome to Codecool.\nPlease choose your permission.\n1.Applicant | 2.Mentor | 3.Admin | 0.Exit\n"))
+        permission = input("Welcome to Codecool.\nPlease choose your permission.\n1.Applicant | 2.Mentor | 3.Admin | 0.Exit\n")
+
+        permission = int(permission)
+        if not (0 <= permission <= 3):
+            print("Invalid Option, you needed to type a 1, 2, 3 or 0.")
+            Menu()
+
         if permission == 0:
             exit()
         elif permission == 1:
@@ -16,74 +22,93 @@ class Menu(object):
             self.MentorMenu()
         elif permission == 3:
             self.AdminMenu()
-        if not (0 <= permission <= 3):
-            print("Invalid Option, you needed to type a 1, 2, 3 or 0.")
+
+        else:
+            print("Invalid Option, you needed to type a 1, 2, 3 or 0.\n")
             Menu()
 
     def ApplicantMenu(self):
-        choice = input("1.Apply | 2.Interview Subscription | 3.My Application 0.Back\n")
+        choice = input("1.Apply | 2.Interview Subscription | 3.My Application | 4. Question | 0.Back\n")
 
-        try:
-            choice = int(choice)
-            if not (0 <= choice <= 3):
-                print("Invalid Option, you needed to type a 1, 2, 3 or 0.\n")
-                self.ApplicantMenu()
+        choice = int(choice)
+        if not (0 <= choice <= 4):
+            print("Invalid Option, you needed to type a 1, 2, 3, 4 or 0.\n")
+            self.ApplicantMenu()
 
-            choice = int(choice)
             os.system('cls' if os.name == 'nt' else 'clear')
+
+        if choice == 0:
+            Menu()
+        elif choice == 1:
+            self.interface.apply()
+            self.ApplicantMenu()
+        elif choice == 2:
+            self.interface.subscribe_to_interview()
+            self.ApplicantMenu()
+        elif choice == 3:
+            user = Applicant.select().where(Applicant.application_code == input("Select your application code (0 to cancel): "))
+            if user == "0":
+                self.ApplicantMenu()
+            else:
+                self.interface.show_application(user)
+        elif choice == 4:
+            user=input("What's Your application code? ")
+            QuestionInterface.new_question(user=user)
+            self.ApplicantMenu()
+
+        else:
+            print("Invalid option, you needed to type a 1, 2, 3 or 0.\n")
+            self.ApplicantMenu()
+
+    def MentorMenu(self):
+        choice = input("1: Interviews | 2: Questions | 0: Back\n")
+
+        choice = int(choice)
+        if not (0 <= choice <= 2):
+            print("Invalid Option, you needed to type a 1, 2 or 0.\n")
+            self.MentorMenu()
+
+        os.system('cls' if os.name == 'nt' else 'clear')
+
             if choice == 0:
                 Menu()
             if choice == 1:
-                global user
-                user = self.interface.apply()
-                self.ApplicantMenu()
+                self.interface.interview_duty()
+                self.MentorMenu()
             if choice == 2:
-                self.interface.subscribe_to_interview()
-                self.ApplicantMenu()
-            if choice == 3:
-                if 'user' in globals():
-                    self.interface.show_application(user)
-                else:
-                    user = Applicant.select().where(Applicant.application_code == input("Select your application code (0 to cancel): "))
-                    if user == "0":
-                        self.ApplicantMenu()
-                    else:
-                        self.interface.show_application(user)
-                self.ApplicantMenu()
+                print('Which questions do you want to answer?:')
+                self.MentorMenu()
 
-        except TypeError:
-            print("Invalid Option, you needed to type a 1, 2, 3 or 0.\n")
-            self.ApplicantMenu()
-
-
-    def MentorMenu(self):
-        choice = int(input("1: Interviews | 2: Applicants | 0: Back\n"))
-        os.system('cls' if os.name == 'nt' else 'clear')
-        if choice == 0:
-            Menu()
-        if choice == 1:
-            self.interface.interview_duty()
-            self.MentorMenu()
-        if choice == 2:
-            self.MentorMenu()
-        if not (0 <= choice <= 2):
-            print("Invalid Option, you needed to type a 1, 2 or 0.\n")
+        else:
+            print("Invalid option, you needed to type a 1, 2, 3 or 0.\n")
             self.MentorMenu()
 
     def AdminMenu(self):
-        choice = int(input("1.Review Applications | 2.Accept New Applicants | 3.Check on Interviews | 0.Back\n"))
+        choice = input("1.Review Applications | 2.Accept New Applicants | 3.Check on Interviews | \
+        4. Check new questions | 0.Back\n")
+
+        choice = int(choice)
+        if not (0 <= choice <= 4):
+            print("Invalid Option, you needed to type a 1, 2, 3, 4 or 0.\n")
+            self.AdminMenu()
+
         os.system('cls' if os.name == 'nt' else 'clear')
+
         if choice == 0:
             Menu()
-        if choice == 1:
+        elif choice == 1:
             self.interface.check_applications()
             self.AdminMenu()
-        if choice == 2:
+        elif choice == 2:
             self.interface.accept_new_applicants()
             self.AdminMenu()
-        if choice == 3:
+        elif choice == 3:
             self.interface.check_interviews()
             self.AdminMenu()
-        if not (0 <= choice <= 2):
-            print("Invalid Option, you needed to type a 1, 2 or 0.\n")
+        elif choice == 4:
+            Question.print_table(query=Question.select().where(Question.status == "NEW"))
+            self.AdminMenu()
+
+        else:
+            print("Invalid Option, you needed to type a 1, 2 or 3.\n")
             self.AdminMenu()
