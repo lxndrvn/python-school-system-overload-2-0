@@ -5,16 +5,19 @@ import time
 import random
 
 class QuestionInterface:
-    def __init__(self):
+    def __init__(self,user=None):
         self.questions=Question.select()
+        self.user=user
 
-    def new_question(question=None,user=None):
-        if user not in [applicant.application_code for applicant in Applicant.select()]:
-            print("That application code doesn't exist. Please check your application code again. ")
-        else:
-            question = input("What is your question?")
-            Question.create(question = question, date = time.strftime("%Y-%m-%d %I:%M:%S"),
-                            applicant=Applicant.select().where(Applicant.application_code==user).get())
+    @staticmethod
+    def new_question(user=None):
+        question = input("What is your question? ")
+        Question.create(question = question, date = time.strftime("%Y-%m-%d %I:%M:%S"),applicant=user)
+
+    def check_questions():
+        condition=Question.status=="NEW"
+        Question.print_table(condition)
+        print('There are',len(Question.select().where(condition)),'new questions! woohoo! Send to mentors to answer them!')
 
     def accept_new_questions(self):
         for question in Question.select().where(Question.status == 'NEW'):
@@ -22,11 +25,6 @@ class QuestionInterface:
             question.mentor = random.choice(Mentor.select().where(question.applicant.school == Mentor.school).get())
             question.save()
             print("Question", question.id, "was assigned to", question.mentor)
-
-    def check_questions():
-        condition=Question.status=="NEW"
-        Question.print_table(condition)
-        print('There are',len(Question.select().where(condition)),'new questions! woohoo! Send to mentors to answer them!')
 
     def reply():
         mentoremail=input("email: ")

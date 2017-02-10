@@ -6,9 +6,10 @@ from models import *
 
 
 class Interface(object):
-    def __init__(self):
+    def __init__(self,user=None):
         self.applicants = Applicant.select()
         self.mentors = Mentor.select()
+        self.user=user
 
     @property
     def new_applicants(self):
@@ -52,47 +53,35 @@ class Interface(object):
         )
         return user
 
-    @staticmethod
-    def show_application():
-        Applicant.print_table(applicant)
+    def show_application(self):
+        Applicant.print_table(Applicant.application_code==self.user.application_code)
 
     def subscribe_to_interview(self):
-        key = input("Provide Your application code to make an appointment (0 to cancel): ")
-        if key == "0":
-            return
-        elif key not in [applicant.application_code for applicant in self.applicants]:
-            print("No such application in our records. ")
-            self.subscribe_to_interview()
-        print(key)
-
-        applicant = self.applicants.where(Applicant.application_code == key).get()
-        print(applicant)
-
-        InterviewSlot.update(mentor=Mentor.select().where(Mentor.school == applicant.school).count()).execute()
-
-        for interviewslot in InterviewSlot.select():
-            print(interviewslot.id, interviewslot.start, "|", interviewslot.end, "|", interviewslot.mentor)
-
+        InterviewSlot.update(mentor=Mentor.select().where(Mentor.school == self.user.school).count()).execute()
+        InterviewSlot.print_table()
         interviewid = int(input("Choose a slot when we can get to know each other! "))
-
         if InterviewSlot.select().where(InterviewSlot.id == interviewid).get().mentor == 0:
-            print("Sorry, we're all busy that time already, could we arrange an other time? ")
-            self.subscribe_to_interview()
+            while InterviewSlot.select().where(InterviewSlot.id == interviewid).get().mentor == 0:
+                interviewid = int(input("Sorry, we're all busy that time already, could we arrange an other time? "))
+        interviewslot=InterviewSlot.select().where(InterviewSlot.id == interviewid).get()
+        if interviewslot.start in [interview.interview_slot.start for interview in Interview.select()]:
+            busymentors = [interview.mentor for interview in Interview.select().where(Interview.interview_slot == interviewslot)]
+            yourmentor = [mentor for mentor in Mentor.select() if mentor not in busymentors][0]
         else:
-            if InterviewSlot.select().where(InterviewSlot.id == interviewid).get().start in [
-                interview.start for interview in Interview.select()]:
-                busymentors = [interview.mentor for interview in Interview.select().where(
-                    Interview.start == InterviewSlot.select().where(InterviewSlot.id == interviewid).get().start)]
-                yourmentor = [mentor for mentor in Mentor.select() if mentor not in busymentors][0]
-            else:
-                yourmentor = [mentor for mentor in Mentor.select()][0]
-            Interview.create(start=InterviewSlot.select().where(InterviewSlot.id == interviewid).get().start,
-                             end=InterviewSlot.select().where(InterviewSlot.id == interviewid).get().end,
-                             applicant=applicant, mentor=yourmentor)
+            yourmentor = [mentor for mentor in Mentor.select()][0]
+        Interview.create(interview_slot=interviewslot,applicant=self.user, mentor=yourmentor)
+
+    def interview_duty(self):
+        mentoremail = input("Sign in with Your mentor email address (0 to cancel): ")
+        if mentoremail == "0":
+            return
+        teacher = Mentor.select().where(Mentor.email == mentoremail).get()
+        for interview in Interview.select().where(Interview.mentor == teacher):
+            print(interview.start, "|", interview.end, "|", interview.applicant.first_name, "|",
+                  interview.mentor.first_name)
 
     def check_interviews(self):
-        for interview in Interview.select():
-            self.print_interview_data(interview)
+        Interview.print_table()
 
         filter = input("FILTER: 1.By School 2.By Applicant 3.By Mentor 4.By date EXIT: 0. ")
 
@@ -130,20 +119,4 @@ class Interface(object):
         for interview in mentor.interviews:
             self.print_interview_data(interview)
 
-    @staticmethod
-    def print_interview_data(interview):
-        print(
-            interview.start, "|",
-            interview.end, "|",
-            interview.applicant.first_name, "|",
-            interview.mentor.first_name
-        )
 
-    def interview_duty(self):
-        mentoremail = input("Sign in with Your mentor email address (0 to cancel): ")
-        if mentoremail == "0":
-            return
-        teacher = Mentor.select().where(Mentor.email == mentoremail).get()
-        for interview in Interview.select().where(Interview.mentor == teacher):
-            print(interview.start, "|", interview.end, "|", interview.applicant.first_name, "|",
-                  interview.mentor.first_name)
