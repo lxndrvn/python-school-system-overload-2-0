@@ -5,30 +5,29 @@ import time
 import random
 
 class QuestionInterface:
-    def __init__(self):
+    def __init__(self,user=None):
         self.questions=Question.select()
+        self.user=user
 
-    def new_question(question=None,user=None):
-        if user not in [applicant.application_code for applicant in Applicant.select()]:
-            print("That application code doesn't exist. Please check your application code again. ")
-        else:
-            question = input("What is your question?")
-            Question.create(question = question, date = time.strftime("%Y-%m-%d %I:%M:%S"),
-                            applicant=Applicant.select().where(Applicant.application_code==user).get())
+    @staticmethod
+    def new_question(user=None):
+        question = input("What is your question? ")
+        Question.create(question = question, date = time.strftime("%Y-%m-%d %I:%M:%S"),applicant=user)
 
-    def accept_new_questions(self):
-        for question in Question.select().where(Question.status == 'NEW'):
-            question.status = "waiting for answer"
-            question.mentor = random.choice(Mentor.select().where(question.applicant.school == Mentor.school).get())
-            question.save()
-            print("Question", question.id, "was assigned to", question.mentor)
-
-    def check_questions(self):
+    @staticmethod
+    def check_questions():
         condition=Question.status=="NEW"
         Question.print_table(condition)
         print('There are',len(Question.select().where(condition)),'new questions! woohoo! Send to mentors to answer them!')
 
-    def reply(self):
+    def accept_new_questions(user=None):
+        for question in Question.select().where(Question.status == 'NEW'):
+            question.status = "waiting for answer"
+            question.mentor = random.choice([mentor for mentor in Mentor.select().where(Mentor.school==question.applicant.school)])
+            print(question.applicant.first_name, "'s question was assigned to", question.mentor.first_name)
+
+    @staticmethod
+    def reply():
         mentoremail=input("email: ")
         mentor=Mentor.select().where(Mentor.email == mentoremail).get()
         Question.print_table(Question.mentor==mentor)

@@ -55,8 +55,8 @@ for interview_slot in interview_slots:
     InterviewSlot.create(start=interview_slot['start'], end=interview_slot['end'],
                          mentor=Mentor.select().where(Mentor.first_name == interview_slot['mentor']).get())
 
-questions = [{'question': 'Could you give me a (KOA)Laptop?', 'mentor': 'Laci',
+questions = [{'question': 'Could you give me a (KOA)Laptop?', 'applicant': 'David',
               'date': '2017-09-05 17:00:00' }]
 
 for question in questions:
-    Question.create(question=question['question'], date=question['date'])
+    Question.create(applicant=Applicant.select().where(Applicant.first_name==question['applicant']).get(),question=question['question'], date=question['date'])

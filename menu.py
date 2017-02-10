@@ -3,10 +3,10 @@ import os
 from new_questions import *
 
 class Menu(object):
-    def __init__(self,session=True,login=False):
-        self.interface = user_interfaces.Interface()
+    def __init__(self,session=True,user=None,options=[],interface=None):
         self.session=session
-        os.system('cls' if os.name == 'nt' else 'clear')
+        self.interface=user_interfaces.Interface()
+        self.user=user
 
     def opt(self):
         for option in self.options:
@@ -17,54 +17,58 @@ class Menu(object):
         if self.option not in range(len(self.options)):
             while self.option not in range(len(self.options)):
                 self.option=int(input("Invalid Option, choose up to",len(self.options)-1))
-        self.options[self.option]()
+        os.system('cls' if os.name == 'nt' else 'clear')
+        try:
+            self.options[self.option](self.user)
+        except:
+            self.options[self.option]()
 
-    def exit(self):
-        self.session=False
-
-    def logout(self):
-        self.login=False
-
-
-class Login(Menu):
-    def __init__(self):
-        super().__init__()
-        self.options = [self.exit,Applicant,Mentor,Admin]
+    def login(self):
+        self.options=[self.exit,self.applicant,self.mentor,self.admin]
+        os.system('cls' if os.name == 'nt' else 'clear')
         print("Welcome to Codecool! \nChoose user to log in: ")
         self.opt()
 
-
-class Applicant(Menu):
-    def __init__(self,login=True,user=None):
-        super().__init__()
-        self.login=login
-        self.options = [self.logout,self.interface.apply,self.interface.subscribe_to_interview,self.interface.show_application,QuestionInterface.new_question]
-        print("logged in as",self.__class__.__name__)
-        while self.login==True:
+    def applicant(self):
+        application_code=input("Enter application code (N to apply): ")
+        if application_code=="N": 
+            self.interface.apply()
+            return
+        application_codes=[applicant.application_code for applicant in Applicant.select()]
+        if application_code not in application_codes:
+            while application_code not in application_codes:
+                if application_code == "0": return
+                application_code=input("Invalid application code, try again (0 to cancel): ")
+        self.user=self.interface.applicants.where(Applicant.application_code==application_code).get()
+        self.interface = user_interfaces.Interface(self.user)
+        self.options = [self.logout,self.interface.subscribe_to_interview,self.interface.show_application,QuestionInterface.new_question]
+        print("logged in as",self.user.first_name)
+        while self.user!=None:
             self.opt()
 
-
-class Mentor(Menu):
-    def __init__(self,login=True,user=None):
-        super().__init__()
-        email=input()
+    def mentor(self):
+        email=input("email: ")
         emails=[mentor.email for mentor in self.interface.mentors]
         if email not in emails:
             while email not in emails:
                 if email == "0": return
-                email=input("Invalid email, try again ")
-        self.login=True
+                email=input("Invalid email, try again (0 to cancel): ")
+        self.user=self.interface.mentors.where(Mentor.email==email).get()
         self.options = [self.logout,self.interface.interview_duty,QuestionInterface.reply]
-        print("logged in as",self.interface.mentors.where(Mentor.email==email))
-        while self.login==True:
+        print("logged in as",self.user.first_name)
+        while self.user!=None:
             self.opt()
 
-
-class Admin(Menu):
-    def __init__(self,login=False,user=None):
-        super().__init__()
-        self.login=True
-        self.options = [self.logout,self.interface.check_applications,self.interface.accept_new_applicants,self.interface.check_interviews,QuestionInterface.check_questions]
-        print("logged in as",self.__class__.__name__)
-        while self.login==True:
+    def admin(self):
+        self.user="admin"
+        self.options = [self.logout,self.interface.check_applications,self.interface.accept_new_applicants,self.interface.check_interviews,QuestionInterface.check_questions,QuestionInterface.accept_new_questions]
+        print("logged in as",self.user)
+        while self.user!=None:
             self.opt()
+
+    def logout(self):
+        self.user=None
+
+    def exit(self):
+        self.session=False
+
