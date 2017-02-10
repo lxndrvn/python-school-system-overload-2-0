@@ -48,15 +48,15 @@ for applicant in applicants:
 interview_slots=[{'start': '2017-09-01 09:00:00', 'end': '2017-09-01 13:00:00', 'mentor': 'Matyi'},
                  {'start': '2017-09-02 10:00:00', 'end': '2017-09-02 14:00:00', 'mentor': 'Laci'},
                  {'start': '2017-09-03 11:00:00', 'end': '2017-09-03 15:00:00', 'mentor': 'Imi'},
-                 {'start': '2017-09-04 12:00:00', 'end': '2017-09-04 16:00:00', 'mentor': 'Robert'},
+                 {'start': '2017-09-04 12:00:00', 'end': '2017-09-04 16:00:00', 'mentor': 'Róbert'},
                  {'start': '2017-09-05 13:00:00', 'end': '2017-09-05 17:00:00', 'mentor': 'Agnieszka'}]
 
 for interview_slot in interview_slots:
     InterviewSlot.create(start=interview_slot['start'], end=interview_slot['end'],
-                         mentor=Mentor.select().where(Mentor.first_name == interview_slot['mentor']))
+                         mentor=Mentor.select().where(Mentor.first_name == interview_slot['mentor']).get())
 
-questions = [{'question': 'Could you give me a (KOA)Laptop?', 'mentor': 'Laci',
+questions = [{'question': 'Could you give me a (KOA)Laptop?', 'applicant': 'David',
               'date': '2017-09-05 17:00:00' }]
 
 for question in questions:
-    Question.create(question=question['question'], date=question['date'])
+    Question.create(applicant=Applicant.select().where(Applicant.first_name==question['applicant']).get(),question=question['question'], date=question['date'])
