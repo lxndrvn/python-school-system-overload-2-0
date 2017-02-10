@@ -48,10 +48,6 @@ class Applicant(BaseModel):
     city = ForeignKeyField(City, null=True)
     school = ForeignKeyField(School, null=True)
     status = CharField()
-    def questions(self):
-        return self.question
-    def interviews(self):
-        return self.interview
 
 
 class Mentor(BaseModel):
@@ -59,23 +55,16 @@ class Mentor(BaseModel):
     last_name = CharField()
     school = ForeignKeyField(School, related_name="mentors")
     email = CharField()
-    def questions(self):
-        return self.question
-    def interviews(self):
-        return self.interview
 
 
 class InterviewSlot(BaseModel):
     start = CharField()
     end = CharField()
-    mentor = ForeignKeyField(Mentor, null=True)
-    def interviews(self):
-        return self.interview
+    mentor = ForeignKeyField(Mentor, related_name='interview_slots', null=True)
 
 
 class Interview(BaseModel):
     applicant = ForeignKeyField(Applicant, related_name="interviews", null=True)
-    mentor = ForeignKeyField(Mentor, related_name="interviews", null=True)
     interview_slot = ForeignKeyField(InterviewSlot, related_name="interviews", null=True)
 
 

@@ -104,7 +104,7 @@ class Interface(object):
         if school not in schools:
             while school not in schools:
                 if school == "0": return
-                school = input("No school there (0 to cancel): ")                
+                school = input("No school there (0 to cancel): ")
         Interview.print_table(Interview.mentor in [mentor for mentor in Mentor.select().where(Mentor.school in [cool for cool in School.select().where(School.location==school)])])
 
     def filter_by_applicant(self):
@@ -113,7 +113,7 @@ class Interface(object):
         if code not in codes:
             while code not in codes:
                 if code == "0": return
-                code = input("No such application (0 to cancel): ")                
+                code = input("No such application (0 to cancel): ")
         Interview.print_table(Interview.applicant == Applicant.select().where(Applicant.application_code==code))
 
     def filter_by_mentor(self):
@@ -122,7 +122,7 @@ class Interface(object):
         if name not in names:
             while name not in names:
                 if name == "0": return
-                name = input("No such mentor (0 to cancel): ")                
+                name = input("No such mentor (0 to cancel): ")
         Interview.print_table(Interview.mentor == Mentor.select().where(Mentor.first_name==name))
 
     def filter_by_date(self):
@@ -131,6 +131,6 @@ class Interface(object):
         if date not in dates:
             while date not in dates:
                 if date == "0": return
-                date = input("No such mentor (0 to cancel): ")                
+                date = input("No such mentor (0 to cancel): ")
         Interview.print_table(Interview.interview_slot.start == date)
 
