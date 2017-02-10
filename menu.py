@@ -3,7 +3,7 @@ import os
 from new_questions import *
 
 class Menu(object):
-    def __init__(self,session=True,user=None,options=[],interface=None):
+    def __init__(self,session=True,user=None,options='',interface=None):
         self.session=session
         self.interface=user_interfaces.Interface()
         self.user=user
@@ -31,7 +31,7 @@ class Menu(object):
 
     def applicant(self):
         application_code=input("Enter application code (N to apply): ")
-        if application_code=="N": 
+        if application_code=="N":
             self.interface.apply()
             return
         application_codes=[applicant.application_code for applicant in Applicant.select()]
