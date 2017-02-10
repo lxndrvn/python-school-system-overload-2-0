@@ -9,9 +9,9 @@ class BaseModel(Model):
         database = db
 
     @classmethod
-    def print_table(cls,query):
-        cls.query=query
-        records=[record for record in query]
+    def print_table(cls,condition=None):
+        cls.condition=cls.select().where(condition)
+        records=[record for record in cls.condition]
         fields=sorted(list(records[0].__dict__['_data'].keys()))
         print(" "*(sum([max([len(str(column.__dict__['_data'][field])) for column in records]+[len(str(field))])+3 for field in fields])//2)+cls.__name__)
         print(" /"+"-"*(sum([max([len(str(column.__dict__['_data'][field])) for column in records]+[len(str(field))])+3 for field in fields])-1)+"\\")
@@ -26,7 +26,7 @@ class BaseModel(Model):
                 fieldspan=max([len(str(column.__dict__['_data'][field])) for column in records]+[len(str(field))])
                 justify=" "*(fieldspan-len(value))
                 print(" | "+value+justify,end="")
-        print(" |")
+            print(" |")
         print(" \\"+"-"*(sum([max([len(str(column.__dict__['_data'][field])) for column in records]+[len(str(field))])+3 for field in fields])-1)+"/")
 
 
@@ -60,7 +60,7 @@ class Mentor(BaseModel):
 class InterviewSlot(BaseModel):
     start = CharField()
     end = CharField()
-    mentor = ForeignKeyField(Mentor, null=True)
+    mentor = ForeignKeyField(Mentor, related_name='interview_slots', null=True)
 
 
 class Interview(BaseModel):
