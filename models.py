@@ -60,7 +60,7 @@ class Mentor(BaseModel):
 class InterviewSlot(BaseModel):
     start = CharField()
     end = CharField()
-    mentor = ForeignKeyField(Mentor, null=True)
+    mentor = ForeignKeyField(Mentor, related_name='interview_slots', null=True)
 
 
 class Interview(BaseModel):

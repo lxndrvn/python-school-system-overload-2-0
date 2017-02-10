@@ -23,12 +23,12 @@ class QuestionInterface:
             question.save()
             print("Question", question.id, "was assigned to", question.mentor)
 
-    def check_questions():
+    def check_questions(self):
         condition=Question.status=="NEW"
         Question.print_table(condition)
         print('There are',len(Question.select().where(condition)),'new questions! woohoo! Send to mentors to answer them!')
 
-    def reply():
+    def reply(self):
         mentoremail=input("email: ")
         mentor=Mentor.select().where(Mentor.email == mentoremail).get()
         Question.print_table(Question.mentor==mentor)
