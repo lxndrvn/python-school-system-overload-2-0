@@ -60,13 +60,14 @@ class Interface(object):
         InterviewSlot.update(mentor=Mentor.select().where(Mentor.school == self.user.school).count()).execute()
         InterviewSlot.print_table()
         interviewid = int(input("Choose a slot when we can get to know each other! "))
+        if interviewid==0:return
         if InterviewSlot.select().where(InterviewSlot.id == interviewid).get().mentor == 0:
             while InterviewSlot.select().where(InterviewSlot.id == interviewid).get().mentor == 0:
                 interviewid = int(input("Sorry, we're all busy that time already, could we arrange an other time? "))
         interviewslot=InterviewSlot.select().where(InterviewSlot.id == interviewid).get()
         if interviewslot.start in [interview.interview_slot.start for interview in Interview.select()]:
             busymentors = [interview.mentor for interview in Interview.select().where(Interview.interview_slot == interviewslot)]
-            yourmentor = [mentor for mentor in Mentor.select() if mentor not in busymentors][0]
+            yourmentor = random.choice([mentor for mentor in Mentor.select() if mentor not in busymentors])
         else:
             yourmentor = [mentor for mentor in Mentor.select()][0]
         Interview.create(interview_slot=interviewslot,applicant=self.user, mentor=yourmentor)
@@ -76,9 +77,7 @@ class Interface(object):
         if mentoremail == "0":
             return
         teacher = Mentor.select().where(Mentor.email == mentoremail).get()
-        for interview in Interview.select().where(Interview.mentor == teacher):
-            print(interview.start, "|", interview.end, "|", interview.applicant.first_name, "|",
-                  interview.mentor.first_name)
+        Interview.print_table(Interview.mentor == teacher)
 
     def check_interviews(self):
         Interview.print_table()
@@ -97,26 +96,41 @@ class Interface(object):
             self.filter_by_mentor()
 
         if filter == "4":
-            for interview in Interview.select().where(Interview.start == input("Find a date: ")):
-                self.print_interview_data(interview)
+            self.filter_by_date()
 
     def filter_by_school(self):
         school = input("Applications to School: ")
-        mentors = School.select().where(School.location == school).get().mentors
-        for mentor in mentors:
-            for interview in [interview for interview in Interview.select().where(Interview.interview_slot.mentor == mentor)]:
-                self.print_interview_data(interview)
+        schools = [school.location for school in School.select()]
+        if school not in schools:
+            while school not in schools:
+                if school == "0": return
+                school = input("No school there (0 to cancel): ")                
+        Interview.print_table(Interview.mentor in [mentor for mentor in Mentor.select().where(Mentor.school in [cool for cool in School.select().where(School.location==school)])])
 
     def filter_by_applicant(self):
         code = input("Applicant code: ")
-        applicant = Applicant.select().where(Applicant.application_code == code).get()
-        for interview in applicant.interviews:
-            self.print_interview_data(interview)
+        codes = [applicant.application_code for applicant in Applicant.select()]
+        if code not in codes:
+            while code not in codes:
+                if code == "0": return
+                code = input("No such application (0 to cancel): ")                
+        Interview.print_table(Interview.applicant == Applicant.select().where(Applicant.application_code==code))
 
     def filter_by_mentor(self):
-        mentor_name = input("Mentor's first name: ")
-        mentor = Mentor.select().where(Mentor.first_name == mentor_name).get()
-        for interview in mentor.interviews:
-            self.print_interview_data(interview)
+        name = input("Mentor's first name: ")
+        names = [mentor.first_name for mentor in Mentor.select()]
+        if name not in names:
+            while name not in names:
+                if name == "0": return
+                name = input("No such mentor (0 to cancel): ")                
+        Interview.print_table(Interview.mentor == Mentor.select().where(Mentor.first_name==name))
 
+    def filter_by_date(self):
+        date = input("Interview start time: ")
+        dates = [interviewslot.start for interviewslot in InterviewSlot.select()]
+        if date not in dates:
+            while date not in dates:
+                if date == "0": return
+                date = input("No such mentor (0 to cancel): ")                
+        Interview.print_table(Interview.interview_slot.start == date)
 

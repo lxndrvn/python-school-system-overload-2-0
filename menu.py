@@ -61,7 +61,7 @@ class Menu(object):
 
     def admin(self):
         self.user="admin"
-        self.options = [self.logout,self.interface.check_applications,self.interface.accept_new_applicants,self.interface.check_interviews,QuestionInterface.check_questions]
+        self.options = [self.logout,self.interface.check_applications,self.interface.accept_new_applicants,self.interface.check_interviews,QuestionInterface.check_questions,QuestionInterface.accept_new_questions]
         print("logged in as",self.user)
         while self.user!=None:
             self.opt()

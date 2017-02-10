@@ -19,12 +19,11 @@ class QuestionInterface:
         Question.print_table(condition)
         print('There are',len(Question.select().where(condition)),'new questions! woohoo! Send to mentors to answer them!')
 
-    def accept_new_questions(self):
+    def accept_new_questions(user=None):
         for question in Question.select().where(Question.status == 'NEW'):
             question.status = "waiting for answer"
-            question.mentor = random.choice(Mentor.select().where(question.applicant.school == Mentor.school).get())
-            question.save()
-            print("Question", question.id, "was assigned to", question.mentor)
+            question.mentor = random.choice([mentor for mentor in Mentor.select().where(Mentor.school==question.applicant.school)])
+            print(question.applicant.first_name, "'s question was assigned to", question.mentor.first_name)
 
     def reply():
         mentoremail=input("email: ")

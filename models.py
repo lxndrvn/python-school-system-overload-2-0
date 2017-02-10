@@ -9,9 +9,9 @@ class BaseModel(Model):
         database = db
 
     @classmethod
-    def print_table(cls,where=None):
-        cls.where=cls.select().where(where)
-        records=[record for record in cls.where]
+    def print_table(cls,condition=None):
+        cls.condition=cls.select().where(condition)
+        records=[record for record in cls.condition]
         fields=sorted(list(records[0].__dict__['_data'].keys()))
         print(" "*(sum([max([len(str(column.__dict__['_data'][field])) for column in records]+[len(str(field))])+3 for field in fields])//2)+cls.__name__)
         print(" /"+"-"*(sum([max([len(str(column.__dict__['_data'][field])) for column in records]+[len(str(field))])+3 for field in fields])-1)+"\\")
@@ -48,6 +48,10 @@ class Applicant(BaseModel):
     city = ForeignKeyField(City, null=True)
     school = ForeignKeyField(School, null=True)
     status = CharField()
+    def questions(self):
+        return self.question
+    def interviews(self):
+        return self.interview
 
 
 class Mentor(BaseModel):
@@ -55,12 +59,18 @@ class Mentor(BaseModel):
     last_name = CharField()
     school = ForeignKeyField(School, related_name="mentors")
     email = CharField()
+    def questions(self):
+        return self.question
+    def interviews(self):
+        return self.interview
 
 
 class InterviewSlot(BaseModel):
     start = CharField()
     end = CharField()
     mentor = ForeignKeyField(Mentor, null=True)
+    def interviews(self):
+        return self.interview
 
 
 class Interview(BaseModel):
