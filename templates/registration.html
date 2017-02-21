@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title> Registration - {{header}} </title>
+</head>
+<body background="../static/bg.jpg">
+<h1 style="color:white;">Registration</h1><br>
+<form style="color:white"; action="/registration/{{applicant.id}}" method="POST">
+    <label for="first_name">First name</label><br>
+    <textarea name='first_name' id="first_name" rows="1" cols="40" required>{{applicant.name}</textarea><br>
+    <label for="last_name">Last name</label><br>
+    <textarea name='last_name' id="last_name" rows="1" cols="40" required>{{applicant.name}</textarea><br>
+    <label for="gender">Gender</label><br>
+     <select name="gender" id="gender" required>"{{applicant.gender}}">
+         <option value="female">female</option>
+         <option value="male">male</option><br>
+    </select><br>
+    <form>
+        <input type="email" placeholder="Enter your email"><br>
+    </form>
+    <label style="color:white" for="city">City</label><br>
+    <select name="city" id="city" required>"{{city.gender}}">
+         <option value="city">Budapest</option>
+         <option value="city">Miskolc</option>
+         <option value="city">Krakkó</option>
+    </select><br>
+    <br><input type="submit" value="Submit"><br>
+</form><br>
+<form method="get" action="/index">
+    <button type="submit">Home</button>
+</form>
+</body>
+</html>

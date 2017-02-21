@@ -15,13 +15,13 @@ class Interface(object):
     def new_applicants(self):
         return self.applicants.where(Applicant.status == "NEW")
 
-    def generate_unique_code(self):
-        codes = [applicant.application_code for applicant in self.applicants.where(Applicant.status == "ACCEPTED")]
+    @staticmethod
+    def generate_unique_code():
+        codes = [applicant.application_code for applicant in Applicant.select().where(Applicant.status == "ACCEPTED")]
         new_code = str(random.randint(100, 999))
-        if new_code in codes:
-            self.generate_unique_code()
-        else:
-            return new_code
+        while new_code in codes:
+            str(random.randint(100, 999))
+        return new_code
 
     def check_applications(self):
         Applicant.print_table()
