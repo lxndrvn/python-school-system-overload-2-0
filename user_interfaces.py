@@ -15,13 +15,13 @@ class Interface(object):
     def new_applicants(self):
         return self.applicants.where(Applicant.status == "NEW")
 
-    def generate_unique_code(self):
-        codes = [applicant.application_code for applicant in self.applicants.where(Applicant.status == "ACCEPTED")]
+    @staticmethod
+    def generate_unique_code():
+        codes = [applicant.application_code for applicant in Applicant.select().where(Applicant.status == "ACCEPTED")]
         new_code = str(random.randint(100, 999))
-        if new_code in codes:
-            self.generate_unique_code()
-        else:
-            return new_code
+        while new_code in codes:
+            str(random.randint(100, 999))
+        return new_code
 
     def check_applications(self):
         Applicant.print_table()
@@ -144,13 +144,9 @@ class Interface(object):
 
     def filter_by_date(self):
         date = input("Interview start time: (e.g. 2017-02-10) ")
-        interview_slots = InterviewSlot.select(InterviewSlot.start.contains(date))
-        print(interview_slots)
-        for slot in interview_slots:
-            for interview in slot.interviews:
-                print(
-                    interview.interview_slot.start, '|',
-                    interview.interview_slot.end, '|',
-                    interview.interview_slot.mentor.first_name, '|',
-                    interview.applicant.first_name, '|',
-                )
+        slot = InterviewSlot.select().where(InterviewSlot.start == date).get()
+        print(
+            slot.start, '|',
+            slot.end, '|',
+            slot.mentor.first_name, '|',
+        )
