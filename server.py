@@ -10,7 +10,7 @@ def registration():
         new_app = Applicant.create(first_name=request.form['first_name'], last_name=request.form['last_name'],
                                    city=request.form['city'], email=request.form['email'])
         new_app.save()
-        return redirect(url_for('index.html'))
+        return redirect(url_for('start.html'))
 
 
 if __name__ == '__main__':
