@@ -1,12 +1,8 @@
 from peewee import *
-from connect import create_database
-
-db = create_database()
-
-
+from database import *
 class BaseModel(Model):
     class Meta:
-        database = db
+        database = Database.database
 
     @classmethod
     def print_table(cls,condition=None):
