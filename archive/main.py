@@ -1,4 +1,3 @@
-# Write here your console application
 from menu import *
 
 if __name__=='__main__':
