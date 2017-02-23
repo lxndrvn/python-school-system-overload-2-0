@@ -30,6 +30,6 @@ class QuestionInterface:
 
     @staticmethod
     def reply():
-        mentoremail = input("email: ")
-        mentor = Mentor.select().where(Mentor.email == mentoremail).get()
+        mentor_email = input("email: ")
+        mentor = Mentor.select().where(Mentor.email == mentor_email).get()
         Question.print_table(Question.mentor == mentor)

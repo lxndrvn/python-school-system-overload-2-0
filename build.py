@@ -1,4 +1,3 @@
-import connect
 from models import *
 
 db = connect.create_database()

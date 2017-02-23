@@ -1,12 +1,19 @@
 from flask import Flask, request, session, redirect, url_for, render_template
-from build import *
+from models import *
 
-app = Flask(__name__, template_folder='templates')
+app = Flask(__name__, template_folder='./')
 
-def init_db():
-    db.connect()
-    db.drop_tables([Admin, Applicant], safe=True, cascade=True)
-    db.create_tables([Admin, Applicant], safe=True)
+
+def create_tables():
+    Database.database.drop_tables([Applicant], safe=True, cascade=True)
+    Database.database.create_tables([Applicant, Admin], safe=True)
+    Admin.create(email='admin@cf.com', password='trash')
+    Applicant.create(application_code='000',
+                     first_name='Rudolf',
+                     last_name = 'Turo',
+                     gender='male',
+                     email='rudolf@gmail.com',
+                     status='new')
 
 
 @app.route('/', methods=["GET"])
@@ -51,5 +58,5 @@ def registration():
 
 
 if __name__ == '__main__':
-    init_db()
+    create_tables()
     app.run(debug=True)
