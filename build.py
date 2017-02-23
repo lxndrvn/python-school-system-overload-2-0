@@ -1,6 +1,7 @@
 from models import *
+import database
 
-db = connect.create_database()
+db = database.create_database()
 
 db.connect()
 db.drop_tables([School, City, Applicant, Mentor, InterviewSlot, Interview, Question, Admin], safe=True, cascade=True)

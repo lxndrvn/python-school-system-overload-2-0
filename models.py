@@ -1,9 +1,11 @@
+from peewee import *
 from database import *
 
+db = create_database()
 
 class BaseModel(Model):
     class Meta:
-        database = Database.database
+        database = db
 
 
 class School(BaseModel):
