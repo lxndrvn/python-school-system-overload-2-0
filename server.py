@@ -18,7 +18,17 @@ def create_tables():
 
 @app.route('/', methods=["GET"])
 def home():
-    return render_template('index.html')
+    return render_template('home.html')
+
+@app.route('/{{user}}', methods=['GET', 'POST'])
+def menu():
+    return render_template('menu.html',records=records,fields=fields)
+
+@app.route('/catalogue/<table>', methods=['GET', 'POST'])
+def catalogue(table=Applicant):
+    fields=table._meta.fields.keys()
+    records=table.select()
+    return render_template('catalogue.html',records=records,fields=fields)
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -43,12 +53,12 @@ def admin_page():
 
 
 @app.route('/registration', methods=['GET'])
-def apply():
-    applicant = []
-    return render_template('registration.html', applicant=applicant)
+def form():
+    applicant=Applicant()
+    header=applicant.application_code if applicant != None else None
+    return render_template('registration.html',applicant=applicant,header=header)
 
-
-@app.route('/registration', methods=['POST'])
+@app.route('/register/', methods=['POST'])
 def registration():
     new_applicant = Applicant.create(first_name=request.form['first_name'],
                                      last_name=request.form['last_name'],
