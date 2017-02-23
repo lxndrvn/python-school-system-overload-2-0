@@ -2,7 +2,6 @@ from peewee import *
 
 
 class Database:
-    @staticmethod
     def read_name():
         try:
             return open('database.txt', "r").readline().strip()

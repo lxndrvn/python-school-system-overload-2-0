@@ -90,3 +90,5 @@ ENV/
 
 database.txt
 .idea/
+archive/
+build.py
