@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html><head><title> Registration - {{header}} </title></head>
+<body background="../static/bg.jpg" style="background-color:black">
+<h1 style="color:white;">Registration</h1><br>
+<form style="color:white"; action="/register" method="POST">
+{% for field in fields if field!="id" %}
+<label for="{{field}}">{{field.capitalize()}}</label><br/>
+
+{% if isinstance(applicant.cls._meta.fields[field],CharField) %}
+<textarea name="{{field}}" id="{{field}}" rows="1" cols="40" required>{{applicant.__dict__['_data'][field]}}</textarea><br>
+
+{% elif isinstance(applicant._meta.fields[field],CharField)  %}
+<label for="gender">Gender</label><br>
+<select name="gender" id="gender" required>"{{applicant.gender}}">
+<option value="female">female</option>
+<option value="male">male</option><br></select><br>
+
+{% elif isinstance(applicant._meta.fields[field],CharField) %}
+<input type="email" placeholder="Enter your email"><br>
+
+{% elif isinstance(applicant._meta.fields[field],CharField) %}
+<label style="color:white" for="city">City</label><br>
+<select name="city" id="city" required>"{{applicant.city}}">
+<option value="city">Budapest</option>
+<option value="city">Miskolc</option>
+<option value="city">Krakkó</option></select><br>
+
+{% endif %}
+{% endfor %}
+<br><input type="submit" value="Register"><br>
+</form><br>
+<form method="get" action="/">
+    <button type="submit">Cancel</button>
+</form>
+</body>
+</html>
