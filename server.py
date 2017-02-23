@@ -10,7 +10,7 @@ def create_tables():
     Admin.create(email='admin@cf.com', password='trash')
     Applicant.create(application_code='000',
                      first_name='Rudolf',
-                     last_name = 'Turo',
+                     last_name = 'Ronda',
                      gender='male',
                      email='rudolf@gmail.com',
                      status='new')
@@ -20,9 +20,14 @@ def create_tables():
 def home():
     return render_template('home.html')
 
-@app.route('/{{user}}', methods=['GET', 'POST'])
-def menu():
-    return render_template('menu.html',records=records,fields=fields)
+
+@app.route('/menu', methods=['POST'])
+def menu(table):
+    if request.form['email'] in [record.email for record in table] and request.form['password'] == table.where(cls.email == request.form['email']):
+        user = table.select().where(table.email == request.form['email'])
+        options = user.options
+    return render_template('menu.html', options=options)
+
 
 @app.route('/catalogue/<table>', methods=['GET', 'POST'])
 def catalogue(table=Applicant):

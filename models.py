@@ -5,33 +5,6 @@ class BaseModel(Model):
     class Meta:
         database = Database.database
 
-    @classmethod
-    def print_table(cls, condition=None):
-        cls.condition = cls.select().where(condition)
-        records = [record for record in cls.condition]
-        fields = sorted(list(records[0].__dict__['_data'].keys()))
-        print(" " * (sum(
-            [max([len(str(column.__dict__['_data'][field])) for column in records] + [len(str(field))]) + 3 for field in
-             fields]) // 2) + cls.__name__)
-        print(" /" + "-" * (sum(
-            [max([len(str(column.__dict__['_data'][field])) for column in records] + [len(str(field))]) + 3 for field in
-             fields]) - 1) + "\\")
-        for field in fields:
-            fieldspan = max([len(str(column.__dict__['_data'][field])) for column in records] + [len(str(field))])
-            justify = " " * (fieldspan - len(field))
-            print(" | " + field.upper() + justify, end="")
-        print(" |")
-        for record in records:
-            for field in fields:
-                value = str(record.__dict__['_data'][field])
-                fieldspan = max([len(str(column.__dict__['_data'][field])) for column in records] + [len(str(field))])
-                justify = " " * (fieldspan - len(value))
-                print(" | " + value + justify, end="")
-            print(" |")
-        print(" \\" + "-" * (sum(
-            [max([len(str(column.__dict__['_data'][field])) for column in records] + [len(str(field))]) + 3 for field in
-             fields]) - 1) + "/")
-
 
 class School(BaseModel):
     location = CharField()
@@ -87,3 +60,6 @@ class Answer(BaseModel):
 class Admin(BaseModel):
     email = CharField()
     password = CharField()
+
+
+
