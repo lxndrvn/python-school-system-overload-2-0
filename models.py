@@ -80,3 +80,7 @@ class Answer(BaseModel):
     answer = CharField()
     question = ForeignKeyField(Question, related_name="answers")
 
+
+class Admin(BaseModel):
+    email = CharField()
+    password = CharField()

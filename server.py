@@ -1,20 +1,55 @@
-from models import *
-from flask import *
-from user_interfaces import *
-app = Flask(__name__, template_folder='templates')
+from flask import Flask, request, session, redirect, url_for, render_template
 from build import *
 
+app = Flask(__name__, template_folder='templates')
 
-@app.route('/registration', methods=['GET', 'POST'])
+def init_db():
+    db.connect()
+    db.drop_tables([Admin, Applicant], safe=True, cascade=True)
+    db.create_tables([Admin, Applicant], safe=True)
+
+
+@app.route('/', methods=["GET"])
+def home():
+    return render_template('index.html')
+
+
+@app.route('/login', methods=['GET', 'POST'])
+def admin_login():
+    if request.method == 'POST':
+        email = request.form['email']
+        password = request.form['password']
+        identification = Admin.select().where(Admin.email == email)
+        if identification:
+            admin = Admin.select().where(Admin.email == email).get()
+            if admin.password == password:
+                session['password'] = admin.password
+        else:
+            return render_template('index.html')
+    return render_template('admin.html')
+
+
+@app.route('/admin_page', methods=['GET'])
+def admin_page():
+    return render_template('admin.html', applicants=Applicant.select(), schools=School.select(),
+                           mentors=Mentor.select(), interviews=Interview.select())
+
+
+@app.route('/registration', methods=['GET'])
+def apply():
+    applicant = []
+    return render_template('registration.html', applicant=applicant)
+
+
+@app.route('/registration', methods=['POST'])
 def registration():
-        new_app = Applicant.create(first_name=request.form['first_name'], last_name=request.form['last_name'],
-                                   city=request.form['city'], email=request.form['email'])
-        new_app.save()
-        return redirect(url_for('start.html'))
+    new_applicant = Applicant.create(first_name=request.form['first_name'],
+                                     last_name=request.form['last_name'],
+                                     city=request.form['city'],
+                                     email=request.form['email'])
+    return redirect(url_for('start.html', new_applicant=new_applicant))
 
 
 if __name__ == '__main__':
-    db.connect()
-    db.drop_tables([Applicant], safe=True, cascade=True)
-    db.create_tables([Applicant], safe=True)
+    init_db()
     app.run(debug=True)

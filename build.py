@@ -1,12 +1,11 @@
-# This script can create the database tables based on your models
 import connect
 from models import *
 
 db = connect.create_database()
 
 db.connect()
-db.drop_tables([School, City, Applicant, Mentor, InterviewSlot, Interview, Question], safe=True, cascade=True)
-db.create_tables([School, City, Applicant, Mentor, InterviewSlot, Interview, Question], safe=True)
+db.drop_tables([School, City, Applicant, Mentor, InterviewSlot, Interview, Question, Admin], safe=True, cascade=True)
+db.create_tables([School, City, Applicant, Mentor, InterviewSlot, Interview, Question, Admin], safe=True)
 
 bpschool = School.create(location='Budapest')
 misischool = School.create(location='Miskolc')
@@ -29,7 +28,7 @@ mentors=[{'first_name': 'Matyi', 'last_name': 'Szabó', 'school': 'Budapest', 'e
          {'first_name': 'Róbert', 'last_name': 'Kohányi', 'school': 'Miskolc', 'email': 'robert.codecool@gmail.com'}]
 
 for mentor in mentors:
-    Mentor.create(first_name= mentor['first_name'], last_name=mentor['last_name'], email=mentor['email'],school=School.select().where(School.location == mentor['school']).get())
+    Mentor.create(first_name=mentor['first_name'], last_name=mentor['last_name'], email=mentor['email'],school=School.select().where(School.location == mentor['school']).get())
 
 applicants=[{'first_name': 'Alexandra', 'last_name': 'Ivan', 'gender': 'female', 'city': 'Budapest',
              'email': 'ivan.codecool@gmail.com','status': 'NEW'},
@@ -60,3 +59,9 @@ questions = [{'question': 'Could you give me a (KOA)Laptop?', 'applicant': 'Davi
 
 for question in questions:
     Question.create(applicant=Applicant.select().where(Applicant.first_name==question['applicant']).get(),question=question['question'], date=question['date'])
+
+
+admins = [{'email': 'admin@codefool.com', 'password': 'trash'}]
+
+for admin in admins:
+    Admin.create(email=admin['email'], password=admin['password'])
