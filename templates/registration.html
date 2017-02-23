@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title > Application </title>
+</head>
+<body background="../static/home_ad1.jpeg" >
+    <button type="submit">Home</button>
+    <h1 style="color:white;background-color:black; font-size: 200%">Application</h1><br>
+    <form style="color:white"; action="/registration" method="POST">
+        <label style=background-color:black; for="first_name">First name:</label>
+        <textarea name='first_name' id="first_name" rows="1" cols="40" required>first_name</textarea><br><br>
+        <label style=background-color:black; for="last_name">Last name: </label>
+        <textarea name='last_name' id="last_name" rows="1" cols="40" required>last_name</textarea><br><br>
+        <label style=background-color:black; for="gender">Gender: </label>
+         <select name="gender" id="gender" required>gender>
+             <option value="female">female</option>
+             <option value="male">male</option>
+        </select><br><br>
+            <label style=background-color:black; for="gender">Email: </label>
+            <input type="email" placeholder="Enter your email"><br><br>
+        <label style="background-color:black" for="city">City: </label>
+        <select name="city" id="city" required>city<br><br>
+             <option value="city">Budapest</option>
+             <option value="city">Miskolc</option>
+             <option value="city">Krakkó</option>
+        </select><br>
+        <br><input type="submit" value="Submit"><br>
+    </form><br>
+</body>
+</html>

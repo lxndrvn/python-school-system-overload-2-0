@@ -1,11 +1,10 @@
-from peewee import *
+
+from peewee import PostgresqlDatabase
 
 
-class Database:
-    def read_name():
-        try:
-            return open('database.txt', "r").readline().strip()
-        except:
-            print(
-                "You need to create a database and store its name in a file named 'database.txt'. For more info, head over to the README")
-    database = PostgresqlDatabase(read_name())
+def create_database():
+    with open("database.txt", "r") as f:
+        data_lines = f.readlines()
+        db_name = data_lines[0].replace("\n", "").split(":", 1)[1]
+        username = data_lines[1].replace("\n", "").split(":", 1)[1]
+        return PostgresqlDatabase(db_name, user=username)
