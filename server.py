@@ -9,8 +9,12 @@ def createtables():
     Database.database.create_tables([Applicant], safe=True)
 
 @app.route('/', methods=['GET'])
-def login():
-    return render_template('login.html')
+def home():
+    return render_template('home.html')
+
+@app.route('/{{user}}', methods=['GET', 'POST'])
+def menu():
+    return render_template('menu.html',records=records,fields=fields)
 
 @app.route('/catalogue/<table>', methods=['GET', 'POST'])
 def catalogue(table=Applicant):
