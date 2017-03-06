@@ -91,3 +91,5 @@ ENV/
 database.txt
 .idea/
 archive/
+/database.txt
+static/logo.png
