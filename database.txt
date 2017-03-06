@@ -1,2 +1,0 @@
-db_name:lxndrvn
-username:lxndrvn

@@ -88,6 +88,6 @@ ENV/
 # Rope project settings
 .ropeproject
 
-database.txt
 .idea/
-archive/
+
+/database.txt
