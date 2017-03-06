@@ -2,7 +2,7 @@
 <html><head><title>Codecool</title></head>
 <body style="background-color:black;color:white", background="../static/bg.jpg">
 {% if records.count()!=0 %}
-<h1>{{records[0].cls.__name__}}</h1>
+<h1>{{records[0].__name__}}</h1>
 <table>
 <thead><tr>
 {% for field in fields %}

@@ -1,8 +1,9 @@
 from flask import Flask, request, session, redirect, url_for, render_template
 from models import *
 
-app = Flask(__name__)
-
+app = Flask(__name__,template_folder="templates")
+database=create_database()
+tables=BaseModel.__subclasses__()
 
 def create_tables():
     db.connect()
@@ -15,16 +16,27 @@ def home():
     return render_template('home.html')
 
 
-@app.route('/menu', methods=['GET', 'POST'])
-def menu(table):
-    if request.form['email'] in [record.email for record in table] and request.form['password'] == table.where(cls.email == request.form['email']):
-        user = table.select().where(table.email == request.form['email'])
-        options = user.options
-    return render_template('menu.html', options=options)
+@app.route('/login',methods=['POST'])
+def login():
+    index=int(request.form['index'])
+    table=tables[index]
+    for record in table.select():
+      if record.email==request.form['email'] and record.password==request.form['password']:
+        user = record
+        return redirect(url_for('menu',user=user))
+    return render_template('home.html')
 
 
-@app.route('/catalogue/<table>', methods=['GET', 'POST'])
-def catalogue(table=Applicant):
+@app.route('/menu', methods=['GET'])
+def menu(user):
+    options = user.options
+    return render_template('menu.html',options=options)
+
+
+@app.route('/catalogue/<index>', methods=['GET','POST'])
+def catalogue(index):
+    index=int(index)
+    table=tables[index]
     fields=table._meta.fields.keys()
     records=table.select()
     return render_template('catalogue.html',records=records,fields=fields)
@@ -53,7 +65,6 @@ def admin_page():
 @app.route('/registration', methods=['GET'])
 def form():
     return render_template('registration.html')
-
 
 @app.route('/registration', methods=['POST'])
 def registration():
