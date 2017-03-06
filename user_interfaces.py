@@ -1,5 +1,4 @@
-# New applicants arrive into your project database by this script.
-# You can run it anytime to generate new data!
+
 import random
 
 from models import *

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<title>Admin Login</title>
+</head>
+<body background="../static/home.jpeg" style="font-family:Impact">
+
+<h1 style="color:white;background-color:black;text-align:center;font-size:200%">Welcome to CodeFool</h1>
+<form style="text-align:right" method="post" action="/menu/{{user}}">
+<label style="background-color:yellow" for="user">Admin email</label><br/>
+<input type="text" name="user" id="user" placeholder="name@example.com"><br/>
+<label style="background-color:yellow" for="password">Password</label><br/>
+<input type="password" name="password" id="password" placeholder="4815162342"><br/>
+<button type="submit" class="login-button">Login</button>
+</form>
+
+<div style="text-align: center"><span style="font-size:40px;font-weight:900;background-color:#FFFF00;">
+<img src="../static/home_ad1.jpeg" alt="hacker" style="width:500px;height:350px;vertical-align:middle"><br/>
+DO YOU NEED A LOT OF MONEY?<br/><br/>
+<img src="../static/home_ad2.jpg" alt="hacker" style="width:500px;height:350px;vertical-align:middle"><br/>
+DO YOU HAVE A LOT OF FREE TIME?<br/><br/>
+<img src="../static/home_ad3.jpeg" alt="hacker" style="width:500px;height:350px;vertical-align:middle"><br/>
+WOULD YOU LIKE TO WORK IN A PROFESSIONAL TEAM?<br/><br/>
+<img src="../static/home_ad4.jpeg" alt="hacker" style="width:500px;height:350px;vertical-align:middle"><br/>
+<a href="{{url_for('form')}}">CLICK HERE TO JOIN US NOW.</a>
+</span></div>
+</body>
+</html>
