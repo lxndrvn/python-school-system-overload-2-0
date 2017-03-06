@@ -29,7 +29,6 @@
             <li class="dropdown">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="true">Admin <span class="caret"></span></a>
               <ul class="dropdown-menu" role="menu">
-                <li><a href="#">Login</a></li>
                 <li><a href="#">My emails</a></li>
                 <li><a href="#">Registered applicants</a></li>
                 <li><a href="#">Interviews</a></li>
@@ -41,7 +40,6 @@
             <li class="dropdown">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="true">Mentor <span class="caret"></span></a>
               <ul class="dropdown-menu" role="menu">
-                <li><a href="#">Login</a></li>
                 <li><a href="#">My interviews</a></li>
               </ul>
             </li>
@@ -51,13 +49,21 @@
             <li class="dropdown">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="true">Applicant <span class="caret"></span></a>
               <ul class="dropdown-menu" role="menu">
-                <li><a href="#">Login</a></li>
                 <li><a href="#">Registration form</a></li>
                 <li><a href="#">My application</a></li>
                 <li><a href="#">My interview's date</a></li>
               </ul>
           </li>
         </ul>
+       <form class="navbar-form navbar-right" role="search">
+           <div class="form-group">
+               <input type="text" class="form-control" name="username" placeholder="Username">
+           </div>
+           <div class="form-group">
+               <input type="text" class="form-control" name="password" placeholder="Password">
+           </div>
+           <button type="submit" class="btn btn-default">Sign In</button>
+       </form>
       </div>
   </div>
 </nav>
@@ -67,23 +73,17 @@
 
     <div class="container">
         <img src="../static/home_ad1.jpeg" class="img-circle center-block" alt="p1" width="304" height="236">
-        <h1>DO YOU NEED A LOT OF MONEY?</h1><br/>
+        <h2>DO YOU NEED A LOT OF MONEY?</h2><br>
         <img src="../static/home_ad2.jpg" class="img-circle center-block" alt="p2" width="304" height="236">
-        <h1>DO YOU HAVE A LOT OF FREE TIME?</h1><br/>
+        <h2>DO YOU HAVE A LOT OF FREE TIME?</h2><br>
         <img src="../static/home_ad3.jpeg" class="img-circle center-block" alt="p3" width="304" height="236">
-        <h1> WOULD YOU LIKE TO WORK IN A PROFESSIONAL TEAM?</h1><br/>
-        <img src="../static/home_ad4.jpeg" class="img-circle center-block" alt="p4" width="304" height="236">
-        <a href="{{url_for('form')}}"><h1>CLICK HERE TO JOIN US NOW.</h1></a>
+        <h2> WOULD YOU LIKE TO WORK IN A PROFESSIONAL TEAM?</h2><br>
+        <img src="../static/home_ad4.jpeg" class="img-circle center-block" alt="p4" width="304" height="236"><br>
     </div>
 
+    <div class="form-actions">
+          <a href="{{url_for('form')}}" class="btn-lg btn-danger">CLICK HERE TO JOIN US NOW.</a>
+    </div><br>
+
 </body>
-
-    <form style="text-align:right" method="post" action="/menu/{{user}}">
-        <label style="background-color:yellow" for="user">Admin email</label><br/>
-        <input type="text" name="user" id="user" placeholder="name@example.com"><br/>
-        <label style="background-color:yellow" for="password">Password</label><br/>
-        <input type="password" name="password" id="password" placeholder="4815162342"><br/>
-        <button type="submit" class="login-button">Login</button>
-    </form>
-
 </html>

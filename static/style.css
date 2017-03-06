@@ -10,7 +10,7 @@ body {
     position: relative;
     border-radius: 50%;
 }
-    h1 {
+    h1, h2 {
       text-align: center;
       top: 50%;}
 
@@ -19,3 +19,9 @@ body {
     margin-left: auto;
     margin-right: auto;
  }
+
+.form-actions {
+    margin: 0;
+    background-color: transparent;
+    text-align: center;
+}
