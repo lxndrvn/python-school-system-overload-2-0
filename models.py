@@ -27,7 +27,6 @@ class Applicant(BaseModel):
     school = ForeignKeyField(School, null=True)
     status = CharField()
 
-
 class Mentor(BaseModel):
     first_name = CharField()
     last_name = CharField()

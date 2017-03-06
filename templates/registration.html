@@ -1,31 +1,141 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-    <title> Application </title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="{{ url_for('static', filename='bootstrap.min.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='style.css') }}" rel="stylesheet">
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+    <title>Admin Login</title>
 </head>
-<body background="../static/home_ad1.jpeg">
-<button type="submit">Home</button>
-<h1 style="color:white;background-color:black; font-size: 200%">Application</h1><br>
-<form style="color:white" action="{{ url_for('registration') }}" method="POST">
-    <label style=background-color:black; for="first_name">First name:</label>
-    <textarea name='first_name' id="first_name" rows="1" cols="40" required>first_name</textarea><br><br>
-    <label style=background-color:black; for="last_name">Last name: </label>
-    <textarea name='last_name' id="last_name" rows="1" cols="40" required>last_name</textarea><br><br>
-    <label style=background-color:black; for="gender">Gender: </label>
-    <select name="gender" id="gender" required>gender>
-        <option value="female">female</option>
-        <option value="male">male</option>
-    </select><br><br>
-    <label style=background-color:black; for="email">Email: </label>
-    <input name="email " type="email" placeholder="Enter your email"><br><br>
-    <label style="background-color:black" for="city">City: </label>
-    <select name="city" id="city" required>city<br><br>
-        <option value="city">Budapest</option>
-        <option value="city">Miskolc</option>
-        <option value="city">Krakkó</option>
-    </select><br>
-    <br><input type="submit" value="Submit"><br>
-</form>
-<br>
+
+<nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+              data-target="#bs-example-navbar-collapse-1">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="{{ url_for('home') }}">Home</a>
+    </div>
+
+      <div class="navbar-collapse collapse" id="bs-example-navbar-collapse-1" aria-expanded="false" style="height: 1px;">
+          <ul class="nav navbar-nav">
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="true">Admin <span class="caret"></span></a>
+              <ul class="dropdown-menu" role="menu">
+                <li><a href="#">My emails</a></li>
+                <li><a href="#">Registered applicants</a></li>
+                <li><a href="#">Interviews</a></li>
+              </ul>
+            </li>
+          </ul>
+
+          <ul class="nav navbar-nav">
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="true">Mentor <span class="caret"></span></a>
+              <ul class="dropdown-menu" role="menu">
+                <li><a href="#">My interviews</a></li>
+              </ul>
+            </li>
+          </ul>
+
+            <ul class="nav navbar-nav">
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="true">Applicant <span class="caret"></span></a>
+              <ul class="dropdown-menu" role="menu">
+                <li><a href="{{ url_for('form') }}">Registration form</a></li>
+                <li><a href="#">My application</a></li>
+                <li><a href="#">My interview's date</a></li>
+              </ul>
+          </li>
+        </ul>
+       <form class="navbar-form navbar-right" role="search">
+           <div class="form-group">
+               <input type="text" class="form-control" name="username" placeholder="Username">
+           </div>
+           <div class="form-group">
+               <input type="text" class="form-control" name="password" placeholder="Password">
+           </div>
+           <button type="submit" class="btn btn-default">Sign In</button>
+       </form>
+      </div>
+  </div>
+</nav>
+
+<body>
+    <form style="color:white" action="{{ url_for('registration') }}" method="POST"></form>
+    <form class="form-horizontal">
+        <fieldset>
+            <legend style="float:right">Application form</legend>
+
+            <div class="form-group">
+                <label for="first_name" class="col-lg-2 control-label">First name</label>
+                <div class="col-lg-4">
+                    <input type="text" class="form-control" id="first_name" placeholder="Your first name">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="last_name" class="col-lg-2 control-label">Last name</label>
+                <div class="col-lg-4">
+                    <input type="text" class="form-control" id="first_name" placeholder="Your last name">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-lg-2 control-label">Gender</label>
+                <div class="col-lg-4">
+                    <div class="radio">
+                        <label>
+                            <input type="radio" name="optionsRadios" id="optionsRadios1" value="option1" checked="">Male
+                        </label>
+                    </div>
+                    <div class="radio">
+                        <label>
+                            <input type="radio" name="optionsRadios" id="optionsRadios2" value="option2">Female
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="form-group">
+                <label for="inputEmail" class="col-lg-2 control-label">Email</label>
+                <div class="col-lg-4">
+                    <input type="text" class="form-control" id="inputEmail" placeholder="Email">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="inputPassword" class="col-lg-2 control-label">Password</label>
+                <div class="col-lg-4">
+                    <input type="password" class="form-control" id="inputPassword" placeholder="Password">
+                </div>
+            </div>
+
+             <div class="form-group">
+                <label for="select" class="col-lg-2 control-label">City</label>
+                <div class="col-lg-4">
+                    <select class="form-control" id="select">
+                        <option>Budapest</option>
+                      <option>Miskolc</option>
+                      <option>Krakkó</option>
+                    </select><br>
+                </div>
+            </div>
+
+             <div class="form-group">
+              <div class="col-lg-4 col-lg-offset-2">
+                <a href="{{ url_for('home') }}" type="reset" class="btn btn-default">Cancel</a>
+                <button type="submit" class="btn btn-primary">Submit</button>
+              </div>
+            </div>
+        </fieldset>
+    </form>
 </body>
 </html>
