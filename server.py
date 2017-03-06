@@ -8,13 +8,6 @@ def create_tables():
     db.connect()
     db.drop_tables([Admin, Applicant], safe=True, cascade=True)
     db.create_tables([Admin, Applicant], safe=True)
-    Admin.create(email='admin@cf.com', password='trash')
-    Applicant.create(application_code='000',
-                     first_name='Rudolf',
-                     last_name = 'Ronda',
-                     gender='male',
-                     email='rudolf@gmail.com',
-                     status='new')
 
 
 @app.route('/', methods=["GET"])
@@ -64,12 +57,14 @@ def form():
 
 @app.route('/registration', methods=['POST'])
 def registration():
-        new_app = Applicant.create(first_name=request.form['first_name'], last_name=request.form['last_name'],
-                                   city=request.form['city'], email=request.form['email'])
-        new_app.save()
-        return redirect(url_for('home'))
+    new_app = Applicant.create(first_name=request.form['first_name'], last_name=request.form['last_name'],
+                               city=request.form['city'],
+                               status="new",
+                               gender=request.form['gender'],
+                               email=request.form['email'])
+    return redirect(url_for('home'))
 
 
 if __name__ == '__main__':
-    #create_tables()
+    create_tables()
     app.run(debug=True)
