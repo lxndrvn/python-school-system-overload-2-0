@@ -26,6 +26,7 @@ class Applicant(BaseModel):
     city = ForeignKeyField(City, null=True)
     school = ForeignKeyField(School, null=True)
     status = CharField()
+    password = CharField(null=True)
 
 
 class Mentor(BaseModel):

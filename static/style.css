@@ -14,6 +14,13 @@ body {
       text-align: center;
       top: 50%;}
 
+
+h1 { color: yellow;
+    font-size: 110px;
+    font-family: 'Signika', sans-serif;
+    padding-bottom: 10px; }
+
+
 .center-block {
     display: block;
     margin-left: auto;
@@ -25,3 +32,4 @@ body {
     background-color: transparent;
     text-align: center;
 }
+
