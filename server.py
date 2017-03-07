@@ -11,19 +11,19 @@ def home():
 
 @app.route('/login',methods=['POST'])
 def login():
-    index=int(request.form['index'])
-    table=tables[index]
-    for record in table.select():
-      if record.email==request.form['email'] and record.password==request.form['password']:
-        user = record
-        return redirect(url_for('menu',user=user))
-    return render_template('home.html')
+    for table in tables:
+        records=table.select()
+        for record in records:
+            if record.email==request.form['user'] and record.password==request.form['password']:
+                user = record
+                return redirect(url_for('menu',user=user))
+    return render_template('home.html',message="wrong username or password")
 
 
-@app.route('/menu', methods=['GET'])
+@app.route('/<user>', methods=['GET'])
 def menu(user):
     options = user.options
-    return render_template('menu.html',options=options)
+    return render_template('menu.html',user=user,options=options)
 
 
 @app.route('/catalogue/<index>', methods=['GET','POST'])
@@ -33,20 +33,6 @@ def catalogue(index):
     fields=table._meta.fields.keys()
     records=table.select()
     return render_template('catalogue.html',records=records,fields=fields)
-
-
-@app.route('/login', methods=['GET', 'POST'])
-def admin_login():
-    email = request.form['email']
-    password = request.form['password']
-    identification = Admin.select().where(Admin.email == email)
-    if identification:
-        admin = Admin.select().where(Admin.email == email).get()
-        if admin.password == password:
-            session['password'] = admin.password
-    else:
-        return render_template('menu.html')
-    return render_template('admin.html')
 
 
 @app.route('/admin_page', methods=['GET'])
