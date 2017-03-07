@@ -66,13 +66,9 @@ def registration():
                     last_name=request.form['last_name'],
                     gender=request.form['gender'],
                     email=request.form['email'],
-                    city=request.form['city'],
+                    city=City.select().where(City.name==request.form['city']),
                     password = request.form['password'])
     return redirect(url_for('home'))
-
-
-#@app.route('/applicant/profile', methods=['POST'])
-#def app_profile():
 
 
 
