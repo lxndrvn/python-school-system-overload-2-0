@@ -2,14 +2,7 @@ from flask import Flask, request, session, redirect, url_for, render_template
 from models import *
 
 app = Flask(__name__,template_folder="templates")
-database=create_database()
 tables=BaseModel.__subclasses__()
-
-def create_tables():
-    db.connect()
-    db.drop_tables([Admin, Applicant], safe=True, cascade=True)
-    db.create_tables([Admin, Applicant], safe=True)
-
 
 @app.route('/', methods=["GET"])
 def home():
@@ -77,5 +70,4 @@ def registration():
 
 
 if __name__ == '__main__':
-    create_tables()
     app.run(debug=True)
