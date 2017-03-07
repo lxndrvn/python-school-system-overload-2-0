@@ -7,19 +7,22 @@
     <link href="{{ url_for('static', filename='style.css') }}" rel="stylesheet">
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
     <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
-
     <title>Admin Login</title>
 </head>
+
 <nav class="navbar navbar-default">
   <div class="container-fluid">
     <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
               data-target="#bs-example-navbar-collapse-1">
         <span class="sr-only">Toggle navigation</span>
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
+        <a class="navbar-brand">
+          <img style="max-width:190px; margin-top: -84px;" src="/static/logo4.png">
+        </a>
       <a class="navbar-brand" href="{{ url_for('home') }}">Home</a>
     </div>
 
@@ -66,10 +69,9 @@
       </div>
   </div>
 </nav>
+<br><br><br><br>
 
 <body>
-    <h1>Welcome to CodeFool</h1>
-
     <div id="myCarousel" class="carousel slide" data-ride="carousel">
       <div class="carousel-inner" role="listbox">
 
@@ -105,8 +107,8 @@
         <span class="sr-only">Next</span>
       </a>
     </div>
-
-
-
+    <div class="footer navbar-fixed-bottom">
+        <p class= "navbartext">© 2017 | CodeFool | ReLoad inc. | All rights reserved</p>
+    </div>
 </body>
 </html>
