@@ -1,2 +1,2 @@
-db_name:school_project
-username:fani
+db_name:szilniczky
+username:szilniczky
