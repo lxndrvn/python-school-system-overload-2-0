@@ -59,14 +59,21 @@ def admin_page():
 def form():
     return render_template('registration.html')
 
+
 @app.route('/registration', methods=['POST'])
 def registration():
-    new_app = Applicant.create(first_name=request.form['first_name'], last_name=request.form['last_name'],
-                               city=request.form['city'],
-                               status="new",
-                               gender=request.form['gender'],
-                               email=request.form['email'])
+    Applicant.create(first_name=request.form['first_name'],
+                    last_name=request.form['last_name'],
+                    gender=request.form['gender'],
+                    email=request.form['email'],
+                    city=request.form['city'],
+                    password = request.form['password'])
     return redirect(url_for('home'))
+
+
+#@app.route('/applicant/profile', methods=['POST'])
+#def app_profile():
+
 
 
 if __name__ == '__main__':

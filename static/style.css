@@ -15,7 +15,7 @@ body {
       top: 50%;}
 
 
-h1 { color: #ff4444;
+h1 { color: yellow;
     font-size: 110px;
     font-family: 'Signika', sans-serif;
     padding-bottom: 10px; }
@@ -32,3 +32,4 @@ h1 { color: #ff4444;
     background-color: transparent;
     text-align: center;
 }
+
