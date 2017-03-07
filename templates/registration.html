@@ -78,7 +78,7 @@
                 <div class="form-group">
                     <label for="first_name" class="col-lg-2 control-label">First name</label>
                     <div class="col-lg-4">
-                        <input type="text" class="form-control" id="first_name" placeholder="Your first name"
+                        <input type="text" class="form-control" name="first_name" placeholder="Your first name"
                         required>
                     </div>
                 </div>
@@ -86,7 +86,7 @@
                 <div class="form-group">
                     <label for="last_name" class="col-lg-2 control-label">Last name</label>
                     <div class="col-lg-4">
-                        <input type="text" class="form-control" id="first_name" placeholder="Your last name"
+                        <input type="text" class="form-control" name="last_name" placeholder="Your last name"
                         required>
                     </div>
                 </div>
@@ -96,14 +96,12 @@
                     <div class="col-lg-4">
                         <div class="radio">
                             <label>
-                                <input type="radio" name="gender" id="optionsRadios1" value="option1" required checked=""
-                                        >Male
+                                <input type="radio" name="gender" id="optionsRadios1" value="Male" required checked="">Male
                             </label>
                         </div>
                         <div class="radio">
                             <label>
-                                <input type="radio" name="gender" id="optionsRadios2" value="option2" required
-                                        >Female
+                                <input type="radio" name="gender" id="optionsRadios2" value="Female" required checked>Female
                             </label>
                         </div>
                     </div>
@@ -113,14 +111,14 @@
                 <div class="form-group">
                     <label for="inputEmail" class="col-lg-2 control-label">Email</label>
                     <div class="col-lg-4">
-                        <input type="email" class="form-control" id="inputEmail" placeholder="Email" required>
+                        <input type="email" class="form-control" name="email" id="inputEmail" placeholder="Email" required>
                     </div>
                 </div>
 
                 <div class="form-group">
                     <label for="inputPassword" class="col-lg-2 control-label">Password</label>
                     <div class="col-lg-4">
-                        <input type="password" class="form-control" id="inputPassword" placeholder="Password"
+                        <input type="password" class="form-control" name="password" id="inputPassword" placeholder="Password"
                                 required>
                     </div>
                 </div>
@@ -128,7 +126,7 @@
                  <div class="form-group">
                     <label for="select" class="col-lg-2 control-label">City</label>
                     <div class="col-lg-4">
-                        <select class="form-control" id="select" required>
+                        <select class="form-control" name="city" id="select" required>
                             <option>Budapest</option>
                           <option>Miskolc</option>
                           <option>Krakkó</option>
