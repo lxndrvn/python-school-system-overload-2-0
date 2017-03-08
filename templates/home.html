@@ -57,7 +57,7 @@
               </ul>
           </li>
         </ul>
-       <form class="navbar-form navbar-right" role="search" action="login">
+       <form class="navbar-form navbar-right" role="search" method="POST" action="login">
            <div class="form-group">
                <input type="text" class="form-control" name="user" placeholder="Username">
            </div>
@@ -71,7 +71,7 @@
 </nav>
 <br><br><br><br>
 
-<body {%if message is defined%}onload=alert("{{message}}"){%endif%}>
+<body {%if session['message'] is defined%}onload=alert("{{session['message']}}"){%endif%}>
     <div id="myCarousel" class="carousel slide" data-ride="carousel">
       <div class="carousel-inner" role="listbox">
 

@@ -2,34 +2,31 @@ from flask import Flask, request, session, redirect, url_for, render_template
 from models import *
 
 app = Flask(__name__,template_folder="templates")
+app.secret_key="SECRET_KEY"
 tables=BaseModel.__subclasses__()
 
-@app.route('/', methods=["GET"])
-def home():
-    return render_template('home.html')
+@app.route('/', methods=["GET","POST"])
+def home(message=None):
+    return render_template('home.html',message=message)
 
 
-@app.route('/login',methods=['POST'])
+@app.route('/login',methods=['GET','POST'])
 def login():
     for table in tables:
-        records=table.select()
-        for record in records:
-            if record.email==request.form['user'] and record.password==request.form['password']:
-                user = record
-                return redirect(url_for('menu',user=user))
-    return render_template('home.html',message="wrong username or password")
+        if "email" in table._meta.fields.keys():
+            records=table.select()
+            for record in records:
+                if record.email==request.form['user'] and record.password==request.form['password']:
+                    session['user'] = record.email
+                    session['options']=["Applicant","Mentor","Interview","Logout"]
+                    return render_template('menu.html',options=session['options'])
+    session['message']="wrong username or password"
+    return redirect(url_for('home'))
 
 
-@app.route('/<user>', methods=['GET'])
-def menu(user):
-    options = user.options
-    return render_template('menu.html',user=user,options=options)
-
-
-@app.route('/catalogue/<index>', methods=['GET','POST'])
-def catalogue(index):
-    index=int(index)
-    table=tables[index]
+@app.route('/catalogue/<option>', methods=['GET','POST'])
+def catalogue(option):
+    table=[table for table in tables if table.__name__==option][0]
     fields=table._meta.fields.keys()
     records=table.select()
     return render_template('catalogue.html',records=records,fields=fields)
@@ -59,4 +56,5 @@ def registration():
 
 
 if __name__ == '__main__':
+    print(tables[2].__name__)
     app.run(debug=True)
