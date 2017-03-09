@@ -4,32 +4,32 @@
     <link href="{{ url_for('static', filename='bootstrap.min.css') }}" rel="stylesheet">
     <link href="{{ url_for('static', filename='style.css') }}" rel="stylesheet">
 </head>
-<body style="color:white", background="../static/bg.jpg">
-	<h1>All application</h1>
-	<br>
-	<table>
-		<thead>
-			<tr>
-				<th>Application code</th>
-				<th>Name</th>
-				<th>Gender</th>
-				<th>Email</th>
-                <th>School</th>
-				<th>Status</th>
-			</tr>
-		</thead>
-		{% for applicant in applicants %}
-		<tbody>
-			<tr>
-				<td>{{applicant.application_code}}</td>
-				<td>{{applicant.name}}</td>
-				<td>{{applicant.gender}}</td>
-				<td>{{applicant.email}}</td>
-				<td>{{applicant.school}}</td>
-				<td>{{applicant.status}}</td>
-			</tr>
-		</tbody>
-		{% endfor %}
-	</table>
+<body style="color:white" , background="../static/bg.jpg">
+<h1>All application</h1>
+<br>
+<table>
+    <thead>
+    <tr>
+        <th>Application code</th>
+        <th>Name</th>
+        <th>Gender</th>
+        <th>Email</th>
+        <th>School</th>
+        <th>Status</th>
+    </tr>
+    </thead>
+    {% for applicant in applicants %}
+        <tbody>
+        <td>
+        <td>{{ applicant.application_code }}</td>
+        <td>{{ applicant.name }}</td>
+        <td>{{ applicant.gender }}</td>
+        <td>{{ applicant.email }}</td>
+        <td>{{ applicant.school }}</td>
+        <td>{{ applicant.status }}</td>
+        </tr>
+        </tbody>
+    {% endfor %}
+</table>
 </body>
 </html>
