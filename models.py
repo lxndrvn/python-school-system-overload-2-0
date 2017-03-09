@@ -25,7 +25,7 @@ class Applicant(BaseModel):
     email = CharField(unique=True)
     city = ForeignKeyField(City, null=True)
     school = ForeignKeyField(School, null=True)
-    status = CharField()
+    status = CharField(default="NEW")
     password = CharField(null=True)
 
 

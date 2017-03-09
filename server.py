@@ -2,51 +2,34 @@ from flask import Flask, request, session, redirect, url_for, render_template
 from models import *
 
 app = Flask(__name__,template_folder="templates")
+app.secret_key="SECRET_KEY"
 tables=BaseModel.__subclasses__()
 
-@app.route('/', methods=["GET"])
-def home():
-    return render_template('home.html')
+@app.route('/', methods=["GET","POST"])
+def home(message=None):
+    return render_template('home.html',message=message)
 
 
-@app.route('/login',methods=['POST'])
+@app.route('/login',methods=['GET','POST'])
 def login():
-    index=int(request.form['index'])
-    table=tables[index]
-    for record in table.select():
-      if record.email==request.form['email'] and record.password==request.form['password']:
-        user = record
-        return redirect(url_for('menu',user=user))
-    return render_template('home.html')
+    for table in tables:
+        if "email" in table._meta.fields.keys():
+            records=table.select()
+            for record in records:
+                if record.email==request.form['user'] and record.password==request.form['password']:
+                    session['user'] = record.email
+                    session['options']=["Applicant","Mentor","Interview","Logout"]
+                    return render_template('menu.html',options=session['options'])
+    session['message']="wrong username or password"
+    return redirect(url_for('home'))
 
 
-@app.route('/menu', methods=['GET'])
-def menu(user):
-    options = user.options
-    return render_template('menu.html',options=options)
-
-
-@app.route('/catalogue/<index>', methods=['GET','POST'])
-def catalogue(index):
-    index=int(index)
-    table=tables[index]
+@app.route('/catalogue/<option>', methods=['GET','POST'])
+def catalogue(option):
+    table=[table for table in tables if table.__name__==option][0]
     fields=table._meta.fields.keys()
     records=table.select()
     return render_template('catalogue.html',records=records,fields=fields)
-
-
-@app.route('/login', methods=['GET', 'POST'])
-def admin_login():
-    email = request.form['email']
-    password = request.form['password']
-    identification = Admin.select().where(Admin.email == email)
-    if identification:
-        admin = Admin.select().where(Admin.email == email).get()
-        if admin.password == password:
-            session['password'] = admin.password
-    else:
-        return render_template('menu.html')
-    return render_template('admin.html')
 
 
 @app.route('/admin_page', methods=['GET'])
@@ -66,15 +49,12 @@ def registration():
                     last_name=request.form['last_name'],
                     gender=request.form['gender'],
                     email=request.form['email'],
-                    city=request.form['city'],
+                    city=City.select().where(City.name==request.form['city']),
                     password = request.form['password'])
     return redirect(url_for('home'))
 
 
-#@app.route('/applicant/profile', methods=['POST'])
-#def app_profile():
-
-
 
 if __name__ == '__main__':
+    print(tables[2].__name__)
     app.run(debug=True)
