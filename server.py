@@ -56,7 +56,7 @@ def menu(identity):
             if table.__name__ == identity:
                 if session['email'] in [record.email for record in table.select()]:
                     return render_template("menu.html")
-    message = "You have no " + user + " rights"
+    message = "You have no permission"
     return render_template('home.html', message=message)
 
 
