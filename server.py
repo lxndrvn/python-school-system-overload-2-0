@@ -18,7 +18,7 @@ def login():
             for record in records:
                 if record.email==request.form['user'] and record.password==request.form['password']:
                     session['user'] = record.email
-                    session['options']=["Applicant","Mentor","Interview","Logout"]
+                    session['options']={"Registered applicants":"Applicant","Interviews":"Interview","Logout":"Logout"}
                     return render_template('menu.html',options=session['options'])
     session['message']="wrong username or password"
     return redirect(url_for('home'))

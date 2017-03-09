@@ -3,25 +3,52 @@
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link href="{{ url_for('static', filename='bootstrap.min.css') }}" rel="stylesheet">
-<link href="{{ url_for('static', filename='style.css') }}" rel="stylesheet">
+<link href="{{ url_for('static', filename='footer.css') }}" rel="stylesheet">
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
 <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+
 <title>{{session['user']}}</title>
+
+<style>
+    .img-rounded{
+    background: url(/static/admin.jpg);
+    background-size: 1600px 1200px;
+    background-repeat: no-repeat;
+}
+</style>
+
 
 <nav class="navbar navbar-default">
 <div class="navbar-collapse collapse" id="bs-example-navbar-collapse-1" aria-expanded="false" style="height: 1px;">
 <ul class="nav navbar-nav">
+<a class="navbar-brand">
+  <img style="max-width:190px; margin-top: -84px;" src="/static/logo4.png">
+</a>
 <li class="dropdown">
-<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="true">{{session['Admin']}} <span class="caret"></span></a>
+<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="true">{{session['user']}}
 <ul class="dropdown-menu" role="menu">
-{% for option in session['options'] %}
-<li><a href="catalogue/{{option}}">{{option}}</a></li>
+{% for option in session['options'].items() %}
+<li><a href="catalogue/{{option[1]}}">{{option[0]}}</a></li>
 {%endfor%}
-</ul></li></ul></nav>
+</ul></li></ul>
+</div>
+</nav>
 
 </head>
 <h1 style="color:white;">{{session[0]}}</h1>
-<body background="static/bg.jpg">
+<body class="img-rounded">
+
+<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+
+<footer class="footer">
+    <div class="container">
+ <ul class="social-icon animate pull-right">
+     <li><a href="https://www.facebook.com/CodecoolOfficial/?fref=ts"
+            title="facebook" target="_blank"><i class="fa fa-facebook"></i></a></li></ul><br>
+     <ul class="social-icon animate pull-left" style="vertical-align: middle">
+         © 2017 | CodeFool | ReLoad inc. | All rights reserved </ul>
+    </div>
+</footer>
 
 
 
