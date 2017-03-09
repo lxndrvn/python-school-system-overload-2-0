@@ -41,10 +41,10 @@ class Interface(object):
         last_name = input("Family Name: ")
         gender = input("Gender: ")
         email = input("Email address: ")
-        city = input("Home city: ")
-        while city not in [city.name for city in City.select()]:
+        city = input("City(Budapest, Miskolc or Krakow: ")
+        '''while city not in [city.name for city in City.select()]:
             print("Sorry, application is not available in Your city Yet. Please select another one.")
-            city = input("Home city: ")
+            city = input("City: ")'''
         print('Application Successful! Review status in menu 1.')
         Applicant.create(
             status="NEW", application_code=None, first_name=first_name, last_name=last_name,
