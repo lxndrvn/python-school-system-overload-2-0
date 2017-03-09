@@ -6,8 +6,8 @@ app.secret_key="SECRET_KEY"
 tables=BaseModel.__subclasses__()
 
 @app.route('/', methods=["GET","POST"])
-def home(message=None):
-    return render_template('home.html',message=message)
+def home():
+    return render_template('home.html')
 
 
 @app.route('/login',methods=['GET','POST'])
@@ -18,10 +18,32 @@ def login():
             for record in records:
                 if record.email==request.form['user'] and record.password==request.form['password']:
                     session['user'] = record.email
-                    session['options']={"Registered applicants":"Applicant","Interviews":"Interview","Logout":"Logout"}
-                    return render_template('menu.html',options=session['options'])
-    session['message']="wrong username or password"
-    return redirect(url_for('home'))
+                    if table.__name__ == "Admin":
+                        session['options']={"Registered applicants":"Applicant","Interviews":"Interview"}
+                    elif table.__name__ == "Mentor":
+                        session['options']={"My Interviews":"Interview"}
+                    elif table.__name__ == "Applicant":
+                        session['options']={"My Application":"Applicant","Calendar":"Interview"}
+                    return redirect(url_for('menu',user=table.__name__))
+    message="wrong username or password"
+    return render_template('home.html',message=message)
+
+@app.route("/logout",methods=['GET','POST'])
+def logout():
+    session.pop("user")
+    message="Logged out"
+    return render_template('home.html',message=message)
+
+
+@app.route("/<user>",methods=['GET','POST'])
+def menu(user):
+    if 'user' in session:
+        for table in tables:
+            if table.__name__==user:
+                if session['user'] in [record.email for record in table.select()]:
+                    return render_template("menu.html")
+    message="You have no "+user+" rights"
+    return render_template('home.html',message=message)
 
 
 @app.route('/catalogue/<option>', methods=['GET','POST'])
@@ -30,12 +52,6 @@ def catalogue(option):
     fields=table._meta.fields.keys()
     records=table.select()
     return render_template('catalogue.html',records=records,fields=fields)
-
-
-@app.route('/admin_page', methods=['GET'])
-def admin_page():
-    return render_template('menu.html', applicants=Applicant.select(), schools=School.select(),
-                           mentors=Mentor.select(), interviews=Interview.select())
 
 
 @app.route('/registration', methods=['GET'])
