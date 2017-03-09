@@ -42,7 +42,7 @@ def menu(user):
             if table.__name__==user:
                 if session['user'] in [record.email for record in table.select()]:
                     return render_template("menu.html")
-    message="You have no admin rights"
+    message="You have no "+user+" rights"
     return render_template('home.html',message=message)
 
 
