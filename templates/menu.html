@@ -1,11 +1,29 @@
 <!DOCTYPE html>
 <html>
-<head><title>{{user.first_name}}</title></head>
-<h1 style="color:white;">Admin homepage</h1>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link href="{{ url_for('static', filename='bootstrap.min.css') }}" rel="stylesheet">
+<link href="{{ url_for('static', filename='style.css') }}" rel="stylesheet">
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+<script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+<title>{{session['user']}}</title>
+
+<nav class="navbar navbar-default">
+<div class="navbar-collapse collapse" id="bs-example-navbar-collapse-1" aria-expanded="false" style="height: 1px;">
+<ul class="nav navbar-nav">
+<li class="dropdown">
+<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="true">{{session['Admin']}} <span class="caret"></span></a>
+<ul class="dropdown-menu" role="menu">
+{% for option in session['options'] %}
+<li><a href="catalogue/{{option}}">{{option}}</a></li>
+{%endfor%}
+</ul></li></ul></nav>
+
+</head>
+<h1 style="color:white;">{{session[0]}}</h1>
 <body background="static/bg.jpg">
 
-{% for option in options %}
-<button type="submit" name="{{option}}" value="{{option}}" />
-{%endfor%}
+
+
 
 </body></html>
