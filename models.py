@@ -34,6 +34,7 @@ class Mentor(BaseModel):
     last_name = CharField()
     school = ForeignKeyField(School, related_name="mentors")
     email = CharField()
+    password = CharField(null=True)
 
 
 class InterviewSlot(BaseModel):
