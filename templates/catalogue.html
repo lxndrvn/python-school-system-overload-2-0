@@ -1,22 +1,108 @@
 <!doctype html>
-<html><head><title>Codecool</title></head>
-<body style="background-color:black;color:white", background="../static/bg.jpg">
-{% if records.count()!=0 %}
-<h1>{{records[0].__name__}}</h1>
-<table>
-<thead><tr>
-{% for field in fields %}
-<th>{{field.capitalize()}}</th>
-{%endfor%}
-</tr></thead>
-<tbody>
-{% for record in records %}
-<tr>
-{% for field in fields %}
-<td>{{record.__dict__['_data'][field]}}</td>
-{%endfor%}
-</tr>
-{%endfor%}
-</tbody></table>
-{%endif%}
-<form action="{{url_for('form')}}"><button type="submit">"Registration"</button></form></body></html>
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css">
+    <script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+    <script src="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+    <link href="{{ url_for('static', filename='bootstrap.min.css') }}" rel="stylesheet">
+</head>
+
+<nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+              data-target="#bs-example-navbar-collapse-1">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+        <a class="navbar-brand">
+          <img style="max-width:190px; margin-top: -84px;" src="/static/logo4.png">
+        </a>
+      <a class="navbar-brand" href="{{ url_for('home') }}">Home</a>
+    </div>
+
+      <div class="navbar-collapse collapse" id="bs-example-navbar-collapse-1" aria-expanded="false" style="height: 1px;">
+          <ul class="nav navbar-nav">
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="true">Admin <span class="caret"></span></a>
+              <ul class="dropdown-menu" role="menu">
+                <li><a href="{{ url_for('catalogue', index=7) }}">Registered applicants</a></li>
+                <li><a href="{{ url_for('catalogue', index=4) }}">Interviews</a></li>
+              </ul>
+            </li>
+          </ul>
+
+          <ul class="nav navbar-nav">
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="true">Mentor <span class="caret"></span></a>
+              <ul class="dropdown-menu" role="menu">
+                <li><a href="#">My interviews</a></li>
+              </ul>
+            </li>
+          </ul>
+
+            <ul class="nav navbar-nav">
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="true">Applicant <span class="caret"></span></a>
+              <ul class="dropdown-menu" role="menu">
+                <li><a href="{{ url_for('form') }}">Registration form</a></li>
+                <li><a href="#">My application</a></li>
+                <li><a href="#">My interview's date</a></li>
+              </ul>
+          </li>
+        </ul>
+       <form class="navbar-form navbar-right" role="search">
+           <div class="form-group">
+               <input type="text" class="form-control" name="username" placeholder="Username">
+           </div>
+           <div class="form-group">
+               <input type="text" class="form-control" name="password" placeholder="Password">
+           </div>
+           <button type="submit" class="btn btn-default">Sign In</button>
+       </form>
+      </div>
+  </div>
+</nav>
+
+<body>
+    <div data-role="page" id="pageone">
+        <div data-role="main" class="ui-content">
+        <form>
+            <input id="filterTable-input" data-type="search" placeholder="Search For...">
+        </form>
+        {% if records.count()!=0 %}
+        <h1>{{records[0].__name__}}</h1>
+        <table data-role="table" class="ui-responsive ui-shadow"
+           id="myTable" data-filter="true" data-input="#filterTable-input">
+            <thead>
+                <tr>
+                {% for field in fields %}
+                <th data-priority data-field = field >{{field.capitalize().replace('_', ' ')}}</th>
+                {%endfor%}
+                </tr>
+            </thead>
+            <tbody>
+                {% for record in records %}
+                    <tr>
+                        {% for field in fields %}
+                        <td>{% if record.__dict__['_data'][field] is number and field != "id" %}
+                            {% for table in session['tables'] %}{% if table.__name__==field.capitalize() %}
+                            {{ 5 }}{% endif %}{% endfor %}
+                            {% else %}{{record.__dict__['_data'][field]}}{% endif %}</td>
+                        {%endfor%}
+                    </tr>
+                {%endfor%}
+            </tbody>
+        </table>
+    {%endif%}
+</body>
+<div class="footer navbar-fixed-bottom">
+        <p class= "navbartext">© 2017 | CodeFool | ReLoad inc. | All rights reserved</p>
+</div>
+<html>
+
+
